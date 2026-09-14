@@ -71,4 +71,13 @@ describe('invitation links', () => {
     expect(relationship).toHaveValue('Mother');
     location.hash = '';
   });
+
+  it('shows the invitation link with an explicit copy action', () => {
+    location.hash = '#share';
+    render(<App />);
+    expect(screen.getByRole('textbox', { name: 'Invitation link' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Copy link' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /share invitation/i })).not.toBeInTheDocument();
+    location.hash = '';
+  });
 });

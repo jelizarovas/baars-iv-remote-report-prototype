@@ -35,3 +35,21 @@ export function IsometricIllustration({ variant = 'forms' }: { variant?: 'forms'
     <g transform="translate(25 30) rotate(-12)"><circle cx="15" cy="15" r="15" fill="#ffd989"/><path d="m9 15 4 4 9-11" fill="none" stroke="#73501c" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></g>
   </svg>;
 }
+
+export function NeuralBackground() {
+  const connections = [
+    'M326 322 410 260 488 308 565 222 650 286 742 218 838 300',
+    'M292 410 386 370 468 438 555 350 646 410 730 344 890 402',
+    'M336 506 426 474 505 548 600 466 695 542 790 472 872 514',
+    'M410 260 386 370 426 474M488 308 468 438 505 548M565 222 555 350 600 466M650 286 646 410 695 542M742 218 730 344 790 472',
+    'M326 322 292 410 336 506M838 300 890 402 872 514M505 548 470 620M695 542 730 616',
+  ];
+  const nodes = [[326,322],[410,260],[488,308],[565,222],[650,286],[742,218],[838,300],[292,410],[386,370],[468,438],[555,350],[646,410],[730,344],[890,402],[336,506],[426,474],[505,548],[600,466],[695,542],[790,472],[872,514],[470,620],[730,616]];
+  return <svg className="neural-background" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <path className="brain-outline" d="M600 137C535 91 449 111 413 177c-75-4-130 48-126 116-59 39-59 126 0 166-8 76 50 139 125 137 39 70 132 78 188 18 56 60 149 52 188-18 75 2 133-61 125-137 59-40 59-127 0-166 4-68-51-120-126-116-36-66-122-86-187-40Z"/>
+    <path className="brain-divider" d="M600 139c-23 54 22 81 0 132s25 81 0 132 25 83 0 134 18 58 0 77"/>
+    <g className="neural-connections">{connections.map((path,index)=><path key={path} className={`neural-path p${index+1}`} d={path}/>)}</g>
+    <g className="neural-nodes">{nodes.map(([cx,cy],index)=><g key={`${cx}-${cy}`} className={`neuron n${index%8+1}`}><circle className="neuron-halo" cx={cx} cy={cy} r="15"/><circle cx={cx} cy={cy} r="5"/></g>)}</g>
+    <g className="neural-sparks"><circle cx="208" cy="248" r="4"/><circle cx="1010" cy="328" r="5"/><circle cx="225" cy="590" r="3"/><circle cx="980" cy="575" r="4"/></g>
+  </svg>;
+}
