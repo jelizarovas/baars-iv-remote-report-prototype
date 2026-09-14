@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Test and deploy review
 
 on:
   push:
@@ -29,11 +29,14 @@ jobs:
         env:
           VITE_REVIEW_PIN_HASH: ${{ secrets.REVIEW_PIN_HASH }}
       - uses: actions/configure-pages@v5
+        if: ${{ vars.ENABLE_PAGES == 'true' }}
       - uses: actions/upload-pages-artifact@v3
+        if: ${{ vars.ENABLE_PAGES == 'true' }}
         with:
           path: dist
 
   deploy:
+    if: ${{ vars.ENABLE_PAGES == 'true' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

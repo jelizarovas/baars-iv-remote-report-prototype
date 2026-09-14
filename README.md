@@ -83,6 +83,8 @@ The invitation does not contain questionnaire answers.
 
 The workflow in `.github/workflows/deploy-pages.yml` tests, builds, and deploys `dist` after a push to `main` or `master`.
 
+Tests and the production build run on every push. Pages deployment runs only when the repository variable `ENABLE_PAGES` is set to `true`. Leave it unset while the repository is private on a plan without private Pages support.
+
 The production build is locked unless `VITE_REVIEW_PIN_HASH` contains a valid SHA-256 hash. Development mode stays open when no hash is configured.
 
 Create the hash locally:
