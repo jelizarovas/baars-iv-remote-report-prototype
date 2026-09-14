@@ -1,0 +1,8 @@
+node_modules/
+.pnpm-store/
+dist/
+tmp/
+*.tsbuildinfo
+.DS_Store
+.env*.local
+PERMISSION_REQUEST.private.md
