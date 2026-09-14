@@ -1,4 +1,5 @@
 import { useLanguage } from '../i18n/LanguageContext';
+import { IsometricIllustration } from './IsometricIllustration';
 
 export function Welcome({ onStart, onInvite }: { onStart: () => void; onInvite: () => void }) {
   const { language } = useLanguage();
@@ -12,9 +13,8 @@ export function Welcome({ onStart, onInvite }: { onStart: () => void; onInvite: 
     fill: 'Pildyti klausimyną', invite: 'Pakviesti kitą žmogų',
   };
   return <main className="setup-shell"><section className="setup-card welcome-card">
-    <div className="brand-mark">BAARS-IV</div>
-    <h1>{copy.title}</h1>
-    <p className="lede">{copy.lede}</p>
+    <div className="welcome-layout"><div><div className="brand-mark">BAARS-IV</div>
+    <h1>{copy.title}</h1><p className="lede">{copy.lede}</p></div><IsometricIllustration variant="welcome"/></div>
     <div className="welcome-note">
       <strong>{copy.privacy}</strong>
       <span>{copy.privacyBody}</span>

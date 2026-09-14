@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { decodeInvitation, encodeInvitation, invitationUrl, respondentFromInvitation, type Invitation } from '../lib/invitation';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from '../App';
 import { makeSession } from '../lib/storage';
 import { returnEmailUrl } from '../components/Review';
@@ -12,7 +13,6 @@ const invitation: Invitation = {
   relationship: 'Coworker',
   returnEmail: 'results@example.test',
   language: 'en',
-  sessionName: 'Workplace responses',
 };
 
 describe('invitation links', () => {
@@ -61,5 +61,14 @@ describe('invitation links', () => {
     render(<App />);
     expect(screen.getByRole('button', { name: /Fill out the questionnaire/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Invite someone to fill it out/ })).toBeInTheDocument();
+  });
+
+  it('uses a working relationship select on the invitation page', async () => {
+    location.hash = '#share';
+    render(<App />);
+    const relationship = screen.getByRole('combobox', { name: 'Their relationship to you' });
+    await userEvent.selectOptions(relationship, 'Mother');
+    expect(relationship).toHaveValue('Mother');
+    location.hash = '';
   });
 });

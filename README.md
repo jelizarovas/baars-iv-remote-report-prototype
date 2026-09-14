@@ -11,7 +11,7 @@ The welcome page offers two routes:
 - Fill out the questionnaire on this device.
 - Create a link for another person to fill it out.
 
-An invitation contains the rated person's name, the respondent's name, their relationship, a return email address, the display language, and an optional session name. The respondent can download the finished PDF and open a pre-addressed email. Browsers cannot attach the PDF automatically.
+An invitation contains the rated person's name, the respondent's name, their relationship, a return email address, and the display language. The respondent can download the finished PDF and open a pre-addressed email. Browsers cannot attach the PDF automatically.
 
 ## Data handling
 
@@ -70,8 +70,7 @@ The encoded payload contains these fields:
   "to": "Respondent",
   "relationship": "Friend",
   "returnEmail": "results@example.test",
-  "language": "en",
-  "sessionName": ""
+  "language": "en"
 }
 ```
 

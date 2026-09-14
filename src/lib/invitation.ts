@@ -7,7 +7,6 @@ export interface Invitation {
   relationship: Relationship;
   returnEmail: string;
   language: LanguageMode;
-  sessionName: string;
 }
 
 const validLanguages: LanguageMode[] = ['lt', 'en'];
@@ -34,7 +33,7 @@ export function decodeInvitation(value: string): Invitation | undefined {
     const parsed = JSON.parse(fromBase64Url(value)) as Record<string, unknown>;
     if (parsed.version !== 2 || typeof parsed.from !== 'string' || typeof parsed.to !== 'string') return;
     if (typeof parsed.relationship !== 'string' || !parsed.relationship.trim()) return;
-    if (typeof parsed.returnEmail !== 'string' || typeof parsed.sessionName !== 'string') return;
+    if (typeof parsed.returnEmail !== 'string') return;
     if (!validLanguages.includes(parsed.language as LanguageMode)) return;
     return {
       version: 2,
@@ -43,7 +42,6 @@ export function decodeInvitation(value: string): Invitation | undefined {
       relationship: parsed.relationship.trim(),
       returnEmail: parsed.returnEmail.trim(),
       language: parsed.language as LanguageMode,
-      sessionName: parsed.sessionName.trim(),
     };
   } catch {
     return;
@@ -66,7 +64,7 @@ export function respondentFromInvitation(invitation: Invitation, date = new Date
     relationship: invitation.relationship,
     returnEmail: invitation.returnEmail,
     language: invitation.language,
-    sessionName: invitation.sessionName,
+    sessionName: '',
     date,
   };
 }
