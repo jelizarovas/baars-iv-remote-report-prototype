@@ -32,7 +32,9 @@ Review URL: [ADD GITHUB PAGES URL]
 
 Review PIN or password: [SEND PRIVATELY]
 
-Source repository: [ADD REPOSITORY URL AND ACCESS DETAILS]
+Source repository: https://github.com/jelizarovas/baars-iv-remote-report-prototype
+
+The source repository is private. I can grant reviewer access on request.
 
 The review gate is intended to prevent casual access during the permission process. I will not present the prototype as an authorized BAARS-IV product or launch it for general use without your written approval.
 
