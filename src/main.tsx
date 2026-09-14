@@ -1,2 +1,2 @@
-import { StrictMode } from 'react';import { createRoot } from 'react-dom/client';import App from './App';import { AccessGate } from './components/AccessGate';import { LanguagePicker, LanguageProvider } from './i18n/LanguageContext';import './styles.css';
-createRoot(document.getElementById('root')!).render(<StrictMode><LanguageProvider><LanguagePicker/><AccessGate><App/></AccessGate></LanguageProvider></StrictMode>);
+import { StrictMode } from 'react';import { createRoot } from 'react-dom/client';import App from './App';import { AccessGate } from './components/AccessGate';import { DisplayControls, LanguageProvider, ThemeProvider } from './i18n/LanguageContext';import './styles.css';
+createRoot(document.getElementById('root')!).render(<StrictMode><LanguageProvider><ThemeProvider><DisplayControls/><AccessGate><App/></AccessGate></ThemeProvider></LanguageProvider></StrictMode>);

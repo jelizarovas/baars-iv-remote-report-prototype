@@ -3,7 +3,10 @@ import type { LanguageMode } from '../types';
 import { invitationFromHash } from '../lib/invitation';
 
 const storageKey = 'baars-iv:display-language';
+const themeStorageKey = 'baars-iv:theme';
 const LanguageContext = createContext<{ language: LanguageMode; setLanguage: (language: LanguageMode) => void }>({ language: 'en', setLanguage: () => {} });
+type Theme = 'light' | 'dark';
+const ThemeContext = createContext<{ theme: Theme; setTheme: (theme: Theme) => void }>({ theme: 'light', setTheme: () => {} });
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<LanguageMode>(() => {
@@ -25,6 +28,16 @@ export function useLanguage() {
   return useContext(LanguageContext);
 }
 
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useState<Theme>(() => localStorage.getItem(themeStorageKey) === 'dark' ? 'dark' : 'light');
+  useEffect(() => {
+    localStorage.setItem(themeStorageKey, theme);
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+  }, [theme]);
+  return <ThemeContext.Provider value={{theme,setTheme}}>{children}</ThemeContext.Provider>;
+}
+
 export function LanguagePicker() {
   const { language, setLanguage } = useLanguage();
   return <label className="language-picker">
@@ -34,4 +47,18 @@ export function LanguagePicker() {
       <option value="lt">🇱🇹 Lietuvių</option>
     </select>
   </label>;
+}
+
+function ThemePicker() {
+  const { language } = useLanguage();
+  const { theme, setTheme } = useContext(ThemeContext);
+  const labels = language === 'en' ? { group:'Color theme', light:'Light mode', dark:'Dark mode' } : { group:'Spalvų tema', light:'Šviesi tema', dark:'Tamsi tema' };
+  return <div className="theme-picker" role="group" aria-label={labels.group}>
+    <button type="button" aria-label={labels.light} aria-pressed={theme==='light'} onClick={()=>setTheme('light')}><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+    <button type="button" aria-label={labels.dark} aria-pressed={theme==='dark'} onClick={()=>setTheme('dark')}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5a8.5 8.5 0 1 0 12 12Z"/></svg></button>
+  </div>;
+}
+
+export function DisplayControls() {
+  return <div className="display-controls"><LanguagePicker/><ThemePicker/></div>;
 }
