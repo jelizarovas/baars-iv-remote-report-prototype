@@ -50,8 +50,8 @@ describe('invitation links', () => {
   it('prefills the intended respondent when an invitation opens', () => {
     location.hash = `#invite=${encodeInvitation(invitation)}`;
     render(<App />);
-    expect(screen.getByRole('textbox', { name: /Vertinamo asmens vardas/ })).toHaveValue('Vertinamas Žmogus');
-    expect(screen.getByRole('textbox', { name: /Jūsų vardas ir pavardė/ })).toHaveValue('Pakviestas Asmuo');
+    expect(screen.getByRole('textbox', { name: /Name of person being rated/ })).toHaveValue('Vertinamas Žmogus');
+    expect(screen.getByRole('textbox', { name: /Your full name/ })).toHaveValue('Pakviestas Asmuo');
     expect(screen.getByRole('combobox', { name: /Relationship to the person/ })).toHaveValue('Coworker');
     location.hash = '';
   });

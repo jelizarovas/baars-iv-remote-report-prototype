@@ -31,11 +31,12 @@ export async function generateCompletedPdf(session:Session,options:GenerateOptio
   if(q.type==='yesno'&&typeof answer==='boolean'){const f=fieldMap.yesno[q.id];circle(pages[f.page],answer?f.yes:f.no,18,8);}
  }
  const age=session.answers['current-29']; if(age&&typeof age==='object'&&'unknown' in age){if(age.unknown)check(pages[fieldMap.age.page],fieldMap.age.unknown);else drawBox(pages[fieldMap.age.page],age.age,fieldMap.age.box,font,9);}
- const overflow:Array<{qid:string;setting:Setting;lt:string;en:string}>=[];
- for(const qid of ['current-30','childhood-20','sct-11']){const a=session.answers[qid] as SettingsAnswer|undefined;if(!a)continue;const map=fieldMap.settings[qid];for(const setting of a.selected){const pt=map.checks[setting];if(pt)check(pages[map.page],pt);const text=a.narratives[setting]?.en||a.narratives[setting]?.lt||'';const box=map.boxes[setting];if(text&&box){const rest=drawBox(pages[map.page],text,box,font,7.5);if(rest)overflow.push({qid,setting,lt:a.narratives[setting]?.lt||'',en:a.narratives[setting]?.en||''});}}
+ const language=session.respondent.language??'en';
+ const overflow:Array<{qid:string;setting:Setting;text:string}>=[];
+ for(const qid of ['current-30','childhood-20','sct-11']){const a=session.answers[qid] as SettingsAnswer|undefined;if(!a)continue;const map=fieldMap.settings[qid];for(const setting of a.selected){const pt=map.checks[setting];if(pt)check(pages[map.page],pt);const text=a.narratives[setting]?.[language]||'';const box=map.boxes[setting];if(text&&box){const rest=drawBox(pages[map.page],text,box,font,7.5);if(rest)overflow.push({qid,setting,text:rest});}}
  }
- if(overflow.length){let page=pdf.addPage([612,792]);let y=744;page.drawText('Bilingual narrative appendix / Dvikalbis atsakymų priedas',{x:42,y,font,size:15,color:black});y-=30;
-  for(const item of overflow){const q=questions.find(x=>x.id===item.qid)!;const head=`${questionnaireTitles[q.questionnaire].en} - Question ${q.number} - ${settingLabels[item.setting].en}`;const body=`Lithuanian / Lietuvių:\n${item.lt||'—'}${item.en?`\nEnglish / Anglų:\n${item.en}`:''}`;const lines=[head,...wrap(body,font,9,528)];if(y-lines.length*12<45){page=pdf.addPage([612,792]);y=744;}for(const line of lines){page.drawText(line,{x:42,y,font,size:9,color:black});y-=12;}y-=12;}
+ if(overflow.length){let page=pdf.addPage([612,792]);let y=744;page.drawText(language==='en'?'Narrative appendix':'Tekstinių atsakymų priedas',{x:42,y,font,size:15,color:black});y-=30;
+  for(const item of overflow){const q=questions.find(x=>x.id===item.qid)!;const labels=questionnaireTitles[q.questionnaire];const setting=settingLabels[item.setting];const head=language==='en'?`${labels.en} - Question ${q.number} - ${setting.en}`:`${labels.lt} - Klausimas ${q.number} - ${setting.lt}`;const lines=[head,...wrap(item.text,font,9,528)];if(y-lines.length*12<45){page=pdf.addPage([612,792]);y=744;}for(const line of lines){page.drawText(line,{x:42,y,font,size:9,color:black});y-=12;}y-=12;}
  }
- pdf.setTitle('Completed BAARS-IV bilingual questionnaire');pdf.setSubject('Respondent-entered answers; no scoring or diagnostic interpretation');return pdf.save();
+ pdf.setTitle('Completed BAARS-IV questionnaire');pdf.setSubject('Respondent-entered answers; no scoring or diagnostic interpretation');return pdf.save();
 }

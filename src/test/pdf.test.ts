@@ -16,5 +16,5 @@ describe('PDF output',()=>{
  it('writes an arbitrary relationship beside Other',()=>expect(relationshipPdfSelection('Counselor')).toEqual({field:'other',circle:'Other (specify)',otherText:'Counselor'}));
  it('returns all seven original pages for ordinary responses',async()=>{const bytes=await generateCompletedPdf(session(),{sourceBytes:await source(),fontBytes:await font()});expect((await PDFDocument.load(bytes)).getPageCount()).toBe(7);});
  it('contains no mapping for Office Use Only fields',()=>expect(JSON.stringify(fieldMap).toLowerCase()).not.toContain('office')); 
- it('moves overflowing narrative text to a bilingual appendix',async()=>{const s=session();s.answers['current-30']={selected:['school'],narratives:{school:{lt:'Labai ilgas pavyzdys '.repeat(140),en:''}}};const bytes=await generateCompletedPdf(s,{sourceBytes:await source(),fontBytes:await font()});expect((await PDFDocument.load(bytes)).getPageCount()).toBeGreaterThan(7);});
+ it('moves overflowing narrative text to a single-language appendix',async()=>{const s=session();s.answers['current-30']={selected:['school'],narratives:{school:{lt:'',en:'A very long example '.repeat(140)}}};const bytes=await generateCompletedPdf(s,{sourceBytes:await source(),fontBytes:await font()});expect((await PDFDocument.load(bytes)).getPageCount()).toBeGreaterThan(7);});
 });

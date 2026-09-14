@@ -1,6 +1,6 @@
-# BAARS-IV bilingual questionnaire
+# BAARS-IV remote-report questionnaire
 
-A mobile-first Lithuanian and English interface for the BAARS-IV Other-Report forms. A respondent answers 61 questions, reviews missing answers, and downloads a completed copy of the original seven-page PDF.
+A mobile-first English and Lithuanian interface for the BAARS-IV Other-Report forms. A respondent answers 61 questions, reviews missing answers, and downloads a completed copy of the original seven-page PDF.
 
 The site does not score answers, interpret results, or provide a diagnosis. Fields marked "Office Use Only" remain blank.
 
@@ -34,7 +34,7 @@ No relationship type is limited to a particular family member.
 
 ## Languages
 
-The display modes are Lithuanian and English, Lithuanian only, and English only. Interface strings live in `src/i18n/locales/lt.json` and `src/i18n/locales/en.json`. Question records accept a `translations` map for more languages.
+English is the default. The flag menu switches the entire interface between English and Lithuanian, with only one language displayed at a time. Interface strings live in `src/i18n/locales/lt.json` and `src/i18n/locales/en.json`. Question records accept a `translations` map for more languages.
 
 To add a language, add its locale file, register it in `src/i18n/index.ts`, add it to the invitation form, and supply translated question text.
 
@@ -70,7 +70,7 @@ The encoded payload contains these fields:
   "to": "Respondent",
   "relationship": "Friend",
   "returnEmail": "results@example.test",
-  "language": "lt-en",
+  "language": "en",
   "sessionName": ""
 }
 ```
@@ -119,7 +119,7 @@ Keep the GitHub repository private unless you have permission to redistribute an
 
 `src/pdf/generatePdf.ts` loads `public/BAARS-IV-original.pdf`, embeds `public/fonts/Arial.ttf`, and draws respondent-entered values at coordinates defined in `src/pdf/fieldMap.ts`.
 
-The generator preserves all seven source pages. Long narrative text continues in a bilingual appendix instead of being cut off.
+The generator preserves all seven source pages. Long narrative text continues in an appendix using the selected language instead of being cut off.
 
 PDF calibration is available during development:
 

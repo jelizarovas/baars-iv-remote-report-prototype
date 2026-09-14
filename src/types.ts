@@ -1,5 +1,5 @@
 export type Relationship = string;
-export type LanguageMode = 'lt-en' | 'lt' | 'en';
+export type LanguageMode = 'lt' | 'en';
 export type QuestionnaireId = 'current' | 'childhood' | 'sct';
 export type Setting = 'school' | 'home' | 'work' | 'social';
 export type QuestionType = 'frequency' | 'yesno' | 'age' | 'settings';

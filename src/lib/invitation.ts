@@ -10,7 +10,7 @@ export interface Invitation {
   sessionName: string;
 }
 
-const validLanguages: LanguageMode[] = ['lt-en', 'lt', 'en'];
+const validLanguages: LanguageMode[] = ['lt', 'en'];
 
 function toBase64Url(value: string): string {
   const bytes = new TextEncoder().encode(value);

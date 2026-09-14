@@ -3,11 +3,11 @@ import type { Relationship } from '../types';
 export type PdfRelationshipField = 'mother' | 'father' | 'sibling' | 'spousePartner' | 'friend' | 'other';
 
 export const relationshipSuggestions = [
-  { value: 'Mother', label: 'Motina / Mother' },
-  { value: 'Father', label: 'Tėvas / Father' },
-  { value: 'Brother/sister', label: 'Brolis ar sesuo / Brother or sister' },
-  { value: 'Spouse/partner', label: 'Sutuoktinis ar partneris / Spouse or partner' },
-  { value: 'Friend', label: 'Draugas / Friend' },
+  { value: 'Mother', en: 'Mother', lt: 'Motina' },
+  { value: 'Father', en: 'Father', lt: 'Tėvas' },
+  { value: 'Brother/sister', en: 'Brother or sister', lt: 'Brolis ar sesuo' },
+  { value: 'Spouse/partner', en: 'Spouse or partner', lt: 'Sutuoktinis ar partneris' },
+  { value: 'Friend', en: 'Friend', lt: 'Draugas' },
 ] as const;
 
 const fields: Record<string, PdfRelationshipField> = {

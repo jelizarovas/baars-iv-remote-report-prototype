@@ -10,4 +10,4 @@ export function listSessions():Session[] {
  return out.sort((a,b)=>b.lastUpdated.localeCompare(a.lastUpdated));
 }
 export function clearSession(session:Session):void { localStorage.removeItem(sessionKey(session.respondent)); }
-export function makeSession(respondent:Respondent):Session { return {version:1,respondent:{...respondent,language:respondent.language??'lt-en'},answers:{},skipped:[],currentQuestionId:'current-1',completed:false,lastUpdated:new Date().toISOString()}; }
+export function makeSession(respondent:Respondent):Session { return {version:1,respondent:{...respondent,language:respondent.language??'en'},answers:{},skipped:[],currentQuestionId:'current-1',completed:false,lastUpdated:new Date().toISOString()}; }

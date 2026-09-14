@@ -12,8 +12,6 @@ export function questionText(question: Question, mode: LanguageMode): string {
   const locale = primaryLanguage(mode);
   return question.translations?.[locale] ?? question[locale];
 }
-export function showEnglish(mode: LanguageMode): boolean { return mode === 'lt-en'; }
 export function localized(lt: string, en: string, mode: LanguageMode): { primary: string; secondary?: string } {
-  if (mode === 'en') return { primary: en };
-  return { primary: lt, secondary: mode === 'lt-en' ? en : undefined };
+  return { primary: mode === 'en' ? en : lt };
 }

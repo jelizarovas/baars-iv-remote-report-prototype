@@ -2,42 +2,46 @@ import { useMemo, useState } from 'react';
 import { invitationUrl, type Invitation } from '../lib/invitation';
 import type { LanguageMode } from '../types';
 import { relationshipSuggestions } from '../lib/relationship';
-
-const empty: Invitation = { version: 2, from: '', to: '', relationship: '', returnEmail: '', language: 'lt-en', sessionName: '' };
+import { useLanguage } from '../i18n/LanguageContext';
 
 export function Share({ onClose }: { onClose: () => void }) {
-  const [form, setForm] = useState(empty);
+  const { language } = useLanguage();
+  const copy = language === 'en' ? {
+    back:'Back', title:'Create an invitation link', lede:'Create a separate link for each person. Their answers will stay in their browser.', privacy:'Names and the email address will be included in the link.',
+    privacyBody:'The details are stored after the # symbol. GitHub Pages does not receive them, but anyone with the link can read them.', from:'From', fromHint:'name of person being rated', to:'To', toHint:"respondent's full name",
+    relationship:'Relationship', choose:'Choose or type', recipientLanguage:'Recipient language', returnEmail:'Return completed form to', session:'Session name', optional:'optional', responses:(name:string)=>`${name||"Respondent"}'s responses`,
+    link:'Invitation link', fill:'Complete the required fields', copy:'Copy link', share:'Share…', missing:'Enter both names, a relationship, and a valid return email address.', copied:'Link copied.', copyFailed:'Could not copy the link. Select it below.',
+  } : {
+    back:'Grįžti', title:'Sukurti kvietimo nuorodą', lede:'Sukurkite atskirą nuorodą kiekvienam žmogui. Atsakymai liks jo naršyklėje.', privacy:'Vardai ir el. paštas bus nuorodoje.',
+    privacyBody:'Duomenys yra po # ženklu. GitHub Pages jų negauna, tačiau nuorodą turintis žmogus gali juos perskaityti.', from:'Nuo', fromHint:'vertinamo asmens vardas', to:'Kam', toHint:'respondento vardas ir pavardė',
+    relationship:'Ryšys', choose:'Pasirinkite arba įrašykite', recipientLanguage:'Gavėjo kalba', returnEmail:'Užpildytą formą grąžinti', session:'Sesijos pavadinimas', optional:'nebūtina', responses:(name:string)=>`${name||'Respondento'} atsakymai`,
+    link:'Kvietimo nuoroda', fill:'Užpildykite privalomus laukus', copy:'Kopijuoti nuorodą', share:'Bendrinti…', missing:'Įrašykite abu vardus, ryšį ir tinkamą grąžinimo el. paštą.', copied:'Nuoroda nukopijuota.', copyFailed:'Nepavyko nukopijuoti. Pažymėkite nuorodą žemiau.',
+  };
+  const [form, setForm] = useState<Invitation>({ version: 2, from: '', to: '', relationship: '', returnEmail: '', language, sessionName: '' });
   const [status, setStatus] = useState('');
   const url = useMemo(() => invitationUrl(form), [form]);
   const update = <K extends keyof Invitation>(key: K, value: Invitation[K]) => setForm(current => ({ ...current, [key]: value }));
   const valid = form.from.trim() && form.to.trim() && form.relationship.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.returnEmail);
-  const copy = async () => {
-    if (!valid) { setStatus('Įrašykite abu vardus, ryšį ir tinkamą grąžinimo el. paštą.'); return; }
-    try { await navigator.clipboard.writeText(url); setStatus('Nuoroda nukopijuota.'); }
-    catch { setStatus('Nepavyko nukopijuoti. Pažymėkite nuorodą žemiau.'); }
-  };
+  const copyLink = async () => { if (!valid) { setStatus(copy.missing); return; } try { await navigator.clipboard.writeText(url); setStatus(copy.copied); } catch { setStatus(copy.copyFailed); } };
   const share = async () => {
-    if (!valid) { setStatus('Įrašykite abu vardus, ryšį ir tinkamą grąžinimo el. paštą.'); return; }
-    if (!navigator.share) { await copy(); return; }
-    try { await navigator.share({ title: 'BAARS-IV klausimynas', text: `${form.to}, prašau užpildyti ${form.from} vertinimą. Užpildytą PDF grąžinkite adresu ${form.returnEmail}.`, url }); }
-    catch (error) { if ((error as DOMException).name !== 'AbortError') await copy(); }
+    if (!valid) { setStatus(copy.missing); return; }
+    if (!navigator.share) { await copyLink(); return; }
+    const text = form.language === 'en' ? `${form.to}, please complete this questionnaire about ${form.from}. Return the completed PDF to ${form.returnEmail}.` : `${form.to}, prašome užpildyti klausimyną apie ${form.from}. Užpildytą PDF grąžinkite adresu ${form.returnEmail}.`;
+    try { await navigator.share({ title: 'BAARS-IV questionnaire', text, url }); } catch (error) { if ((error as DOMException).name !== 'AbortError') await copyLink(); }
   };
   return <main className="setup-shell"><section className="setup-card share-card">
-    <button className="text-button" onClick={onClose}>← Grįžti</button>
-    <div className="brand-mark">BAARS-IV</div>
-    <h1>Sukurti kvietimo nuorodą</h1>
-    <p className="lede">Sukurkite atskirą nuorodą kiekvienam žmogui. Atsakymai liks jo naršyklėje.</p>
-    <div className="privacy-note"><strong>Vardai ir el. paštas bus nuorodoje.</strong><span>Duomenys yra po # ženklu. GitHub Pages jų negauna, tačiau nuorodą turintis žmogus gali juos perskaityti.</span></div>
+    <button className="text-button" onClick={onClose}>← {copy.back}</button><div className="brand-mark">BAARS-IV</div><h1>{copy.title}</h1><p className="lede">{copy.lede}</p>
+    <div className="privacy-note"><strong>{copy.privacy}</strong><span>{copy.privacyBody}</span></div>
     <div className="form-grid">
-      <label>Nuo<span>From · name of person being rated</span><input value={form.from} onChange={e => update('from', e.target.value)} /></label>
-      <label>Kam<span>To · respondent's full name</span><input value={form.to} onChange={e => update('to', e.target.value)} /></label>
-      <label>Ryšys su vertinamu asmeniu<span>Relationship</span><input list="share-relationship-options" value={form.relationship} onChange={e => update('relationship', e.target.value)} placeholder="Pasirinkite arba įrašykite"/><datalist id="share-relationship-options">{relationshipSuggestions.map(option=><option key={option.value} value={option.value}>{option.label}</option>)}</datalist></label>
-      <label>Rodymo kalba<span>Display language</span><select value={form.language} onChange={e => update('language', e.target.value as LanguageMode)}><option value="lt-en">LT + EN</option><option value="lt">Tik lietuvių</option><option value="en">English only</option></select></label>
-      <label>Grąžinti el. paštu<span>Return completed form to</span><input type="email" inputMode="email" autoComplete="email" value={form.returnEmail} onChange={e => update('returnEmail', e.target.value)} placeholder="results@example.test" /></label>
-      <label>Sesijos pavadinimas <small>(nebūtina)</small><span>Optional session name</span><input value={form.sessionName} onChange={e => update('sessionName', e.target.value)} placeholder={`${form.to || 'Respondento'} atsakymai`} /></label>
+      <label>{copy.from}<span>{copy.fromHint}</span><input value={form.from} onChange={e => update('from', e.target.value)} /></label>
+      <label>{copy.to}<span>{copy.toHint}</span><input value={form.to} onChange={e => update('to', e.target.value)} /></label>
+      <label>{copy.relationship}<input list="share-relationship-options" value={form.relationship} onChange={e => update('relationship', e.target.value)} placeholder={copy.choose}/><datalist id="share-relationship-options">{relationshipSuggestions.map(option=><option key={option.value} value={option.value}>{option[language]}</option>)}</datalist></label>
+      <label>{copy.recipientLanguage}<select value={form.language} onChange={e => update('language', e.target.value as LanguageMode)}><option value="en">🇺🇸 English</option><option value="lt">🇱🇹 Lietuvių</option></select></label>
+      <label>{copy.returnEmail}<input type="email" inputMode="email" autoComplete="email" value={form.returnEmail} onChange={e => update('returnEmail', e.target.value)} placeholder="results@example.test" /></label>
+      <label>{copy.session} <small>({copy.optional})</small><input value={form.sessionName} onChange={e => update('sessionName', e.target.value)} placeholder={copy.responses(form.to)} /></label>
     </div>
-    <label className="share-url">Kvietimo nuoroda<input readOnly value={valid ? url : ''} onFocus={e => e.currentTarget.select()} placeholder="Užpildykite vardus" /></label>
-    {status && <p className={status.includes('nukopijuota') ? 'success-message' : 'error'} role="status">{status}</p>}
-    <div className="share-actions"><button className="primary" onClick={copy}>Kopijuoti nuorodą</button><button onClick={share}>Bendrinti…</button></div>
+    <label className="share-url">{copy.link}<input readOnly value={valid ? url : ''} onFocus={e => e.currentTarget.select()} placeholder={copy.fill} /></label>
+    {status && <p className={status===copy.copied ? 'success-message' : 'error'} role="status">{status}</p>}
+    <div className="share-actions"><button className="primary" onClick={copyLink}>{copy.copy}</button><button onClick={share}>{copy.share}</button></div>
   </section></main>;
 }
