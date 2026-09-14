@@ -28,7 +28,7 @@ The prototype has no database, analytics, or network submission endpoint. Invita
 
 For your review, I can provide a PIN-protected demonstration:
 
-Review URL: [ADD GITHUB PAGES URL]
+Review URL: https://jelizarovas.github.io/baars-iv-remote-report-prototype/
 
 Review PIN or password: [SEND PRIVATELY]
 
