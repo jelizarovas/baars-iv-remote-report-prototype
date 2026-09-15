@@ -152,7 +152,7 @@ html[data-theme=dark] .app-layout{background:#0f1916}html[data-theme=dark] .app-
   .display-controls{right:48px}
   .mobile-route-toolbar{left:6px;max-width:126px;gap:5px}
   .mobile-route-toolbar .text-button{height:38px;padding:0 8px;border:1px solid var(--line);border-radius:12px;background:#fffffff2;box-shadow:0 4px 16px #173c3414}
-  .mobile-route-toolbar .brand-mark{padding-inline:6px}
+  .mobile-route-toolbar .brand-mark{padding-inline:6px;background:transparent;border-radius:0}
   .share-experience:focus-within .share-panel{grid-template-rows:108px minmax(0,1fr)}
   .share-experience:focus-within .share-visual{padding:9px 12px 6px}
   .share-experience:focus-within .share-visual h1{max-width:calc(100% - 76px);margin:0 0 4px;font-size:1.35rem;line-height:1.04;white-space:normal;overflow:visible;text-overflow:clip}
@@ -165,3 +165,5 @@ html[data-theme=dark] .app-layout{background:#0f1916}html[data-theme=dark] .app-
   .mobile-route-toolbar .text-button{padding-inline:6px}
   .mobile-route-toolbar .brand-mark{padding-inline:4px}
 }
+
+html[data-theme=dark] .mobile-route-toolbar .brand-mark{background:transparent}
