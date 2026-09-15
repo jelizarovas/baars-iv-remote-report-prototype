@@ -23,11 +23,11 @@ export function Share({ onClose }: { onClose: () => void }) {
   const { language } = useLanguage();
   const en = language === 'en';
   const copy = en ? {
-    back:'Back', title:'Invite someone you trust', lede:'Set up their questionnaire. The link carries the details for them.',
+    back:'Back', title:'Ask someone who knows you well', lede:'Send them a link to answer this questionnaire about you. When they finish, they can return the completed PDF to your email.',
     yourName:'Your name', email:'Your email', invitee:'Who are you inviting?', relationship:'Their relationship to you', choose:'Relationship (optional)', other:'Other', otherLabel:'Type the relationship', recipientLanguage:'Questionnaire language',
     link:'Invitation link', action:'Copy', missing:'Enter both names and a valid email.', copied:'Invitation link copied.',
   } : {
-    back:'Grįžti', title:'Pakvieskite žmogų, kuriuo pasitikite', lede:'Paruoškite jam klausimyną. Visa reikalinga informacija bus nuorodoje.',
+    back:'Grįžti', title:'Paprašykite gerai jus pažįstančio žmogaus', lede:'Nusiųskite nuorodą, kad jis atsakytų į klausimus apie jus. Užpildytą PDF jis galės grąžinti jūsų el. paštu.',
     yourName:'Jūsų vardas', email:'Jūsų el. paštas', invitee:'Ką kviečiate?', relationship:'Koks jo ryšys su jumis?', choose:'Ryšys (nebūtina)', other:'Kita', otherLabel:'Įrašykite ryšį', recipientLanguage:'Klausimyno kalba',
     link:'Kvietimo nuoroda', action:'Kopijuoti', missing:'Įrašykite abu vardus ir tinkamą el. paštą.', copied:'Kvietimo nuoroda nukopijuota.',
   };

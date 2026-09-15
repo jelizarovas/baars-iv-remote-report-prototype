@@ -1,6 +1,7 @@
 import { type FormEvent, type ReactNode, useState } from 'react';
 import { normalizedHash, sha256Hex } from '../lib/access';
 import { useLanguage } from '../i18n/LanguageContext';
+import { IsometricIllustration, NeuralBackground } from './IsometricIllustration';
 
 const storageKey = 'baars-iv:review-access';
 
@@ -30,11 +31,9 @@ export function AccessGate({
 
   if (allowed) return children;
 
-  if (!configuredHash) return <main className="gate-shell"><section className="gate-card">
-    <div className="brand-mark">BAARS-IV</div>
-    <h1>{copy.unavailable}</h1>
-    <p>{copy.unavailableBody}</p>
-  </section></main>;
+  if (!configuredHash) return <main className="gate-shell"><NeuralBackground/><section className="gate-stage"><div className="gate-card">
+    <div className="brand-mark">BAARS-IV</div><h1>{copy.unavailable}</h1><p>{copy.unavailableBody}</p>
+  </div><aside className="gate-art"><IsometricIllustration variant="gate"/></aside></section></main>;
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -46,15 +45,8 @@ export function AccessGate({
     setAllowed(true);
   };
 
-  return <main className="gate-shell"><section className="gate-card">
-    <div className="brand-mark">BAARS-IV</div>
-    <p className="gate-kicker">{copy.kicker}</p>
-    <h1>{copy.title}</h1>
-    <p>{copy.description}</p>
-    <form onSubmit={submit}>
-      <label>{copy.password}<input autoFocus type="password" autoComplete="current-password" value={value} onChange={event => setValue(event.target.value)} /></label>
-      {message && <p className="error" role="alert">{message}</p>}
-      <button className="primary" type="submit">{copy.open}</button>
-    </form>
-  </section></main>;
+  return <main className="gate-shell"><NeuralBackground/><section className="gate-stage"><div className="gate-card">
+    <div className="brand-mark">BAARS-IV</div><p className="gate-kicker">{copy.kicker}</p><h1>{copy.title}</h1><p>{copy.description}</p>
+    <form onSubmit={submit}><label>{copy.password}<input autoFocus type="password" autoComplete="current-password" value={value} onChange={event => setValue(event.target.value)} /></label>{message && <p className="error" role="alert">{message}</p>}<button className="primary" type="submit">{copy.open}</button></form>
+  </div><aside className="gate-art"><IsometricIllustration variant="gate"/></aside></section></main>;
 }
