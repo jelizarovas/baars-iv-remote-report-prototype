@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { decodeInvitation, encodeInvitation, invitationUrl, respondentFromInvitation, type Invitation } from '../lib/invitation';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import { makeSession } from '../lib/storage';
@@ -20,6 +20,11 @@ describe('invitation links', () => {
     const encoded = encodeInvitation(invitation);
     expect(encoded).not.toMatch(/[+/=]/);
     expect(decodeInvitation(encoded)).toEqual(invitation);
+  });
+
+  it('allows an invitation without a relationship', () => {
+    const optionalRelationship = { ...invitation, relationship: '' };
+    expect(decodeInvitation(encodeInvitation(optionalRelationship))).toEqual(optionalRelationship);
   });
 
   it('puts personal details in the fragment rather than the server request path', () => {
@@ -76,8 +81,18 @@ describe('invitation links', () => {
     location.hash = '#share';
     render(<App />);
     expect(screen.getByRole('textbox', { name: 'Invitation link' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Copy link' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Copy' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /share invitation/i })).not.toBeInTheDocument();
+    location.hash = '';
+  });
+
+  it('creates a link while the optional relationship is blank', () => {
+    location.hash = '#share';
+    render(<App />);
+    fireEvent.change(screen.getByRole('textbox', { name: 'Your name' }), { target: { value: 'Rated Person' } });
+    fireEvent.change(screen.getByRole('textbox', { name: 'Your email' }), { target: { value: 'results@example.test' } });
+    fireEvent.change(screen.getByRole('textbox', { name: 'Who are you inviting?' }), { target: { value: 'Respondent' } });
+    expect((screen.getByRole('textbox', { name: 'Invitation link' }) as HTMLInputElement).value).toContain('#invite=');
     location.hash = '';
   });
 });

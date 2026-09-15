@@ -12,18 +12,18 @@ export function Setup({onStart,initial,onOpenShare,onBack}:{onStart:(s:Session)=
   about:'About', invite:'Create invitation', title:'Start questionnaire', lede:'Enter the details that will be added to the completed PDF.', invited:'This invitation is for you',
   asked:(name:string,person:string)=>`${name}, you have been asked to rate ${person}.`, person:'Name of person being rated', respondent:'Your full name', relationship:'Relationship to the person',
   relationshipPlaceholder:'Choose or type', date:'Date', returnTo:'Return completed form to', session:'Session name', optional:'optional', sessionPlaceholder:'For example, first response',
-  missing:'Enter both names and your relationship to the person.', start:'Start', resume:'Continue saved questionnaire', restart:'Start over', restartConfirm:'Are you sure you want to start over?', saved:'Saved sessions',
+  missing:'Enter both names.', start:'Start', resume:'Continue saved questionnaire', restart:'Start over', restartConfirm:'Are you sure you want to start over?', saved:'Saved sessions',
  } : {
   about:'Apie', invite:'Sukurti kvietimą', title:'Pradėti klausimyną', lede:'Įrašykite duomenis, kurie bus perkelti į užpildytą PDF.', invited:'Kvietimas skirtas jums',
   asked:(name:string,person:string)=>`${name}, prašoma įvertinti: ${person}.`, person:'Vertinamo asmens vardas', respondent:'Jūsų vardas ir pavardė', relationship:'Ryšys su vertinamu asmeniu',
   relationshipPlaceholder:'Pasirinkite arba įrašykite', date:'Data', returnTo:'Užpildytą formą grąžinti', session:'Sesijos pavadinimas', optional:'nebūtina', sessionPlaceholder:'Pavyzdžiui, pirmas pildymas',
-  missing:'Įrašykite abu vardus ir ryšį su vertinamu asmeniu.', start:'Pradėti', resume:'Tęsti išsaugotą pildymą', restart:'Pradėti iš naujo', restartConfirm:'Ar tikrai norite pradėti iš naujo?', saved:'Išsaugotos sesijos',
+  missing:'Įrašykite abu vardus.', start:'Pradėti', resume:'Tęsti išsaugotą pildymą', restart:'Pradėti iš naujo', restartConfirm:'Ar tikrai norite pradėti iš naujo?', saved:'Išsaugotos sesijos',
  };
  const [form,setForm]=useState<Respondent>(initial??{personName:'',respondentName:'',relationship:'',date:today(),sessionName:'',language});
  const [error,setError]=useState(''); const saved=useMemo(()=>listSessions(),[]);
  const currentForm = form.language === language ? form : {...form, language};
  const update=<K extends keyof Respondent>(key:K,value:Respondent[K])=>setForm(f=>({...f,[key]:value}));
- const valid=()=>{if(!currentForm.personName.trim()||!currentForm.respondentName.trim()||!currentForm.relationship.trim()){setError(copy.missing);return false}return true};
+ const valid=()=>{if(!currentForm.personName.trim()||!currentForm.respondentName.trim()){setError(copy.missing);return false}return true};
  const start=(fresh:boolean)=>{if(!valid())return; const existing=loadSession(currentForm); onStart(!fresh&&existing?existing:makeSession(currentForm));};
  return <main className="setup-shell"><section className="setup-card">
   <div className="setup-heading"><button className="text-button" onClick={onBack}>← {copy.about}</button><div className="brand-mark">BAARS-IV</div><button className="text-button" onClick={onOpenShare}>{copy.invite}</button></div><h1>{copy.title}</h1><p className="lede">{copy.lede}</p>

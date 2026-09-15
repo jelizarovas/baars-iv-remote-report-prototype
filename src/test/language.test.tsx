@@ -18,9 +18,10 @@ describe('language selection', () => {
 
   it('switches between light and dark mode', async () => {
     render(<LanguageProvider><ThemeProvider><DisplayControls/><Welcome onStart={() => {}} onInvite={() => {}}/></ThemeProvider></LanguageProvider>);
-    expect(screen.getByRole('button', { name: 'Light mode' })).toHaveAttribute('aria-pressed','true');
-    await userEvent.click(screen.getByRole('button', { name: 'Dark mode' }));
+    const toggle = screen.getByRole('button', { name: 'Switch to dark mode' });
+    expect(toggle).toHaveAttribute('aria-pressed','false');
+    await userEvent.click(toggle);
     expect(document.documentElement.dataset.theme).toBe('dark');
-    expect(screen.getByRole('button', { name: 'Dark mode' })).toHaveAttribute('aria-pressed','true');
+    expect(screen.getByRole('button', { name: 'Switch to light mode' })).toHaveAttribute('aria-pressed','true');
   });
 });

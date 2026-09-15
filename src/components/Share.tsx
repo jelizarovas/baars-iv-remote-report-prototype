@@ -23,20 +23,20 @@ export function Share({ onClose }: { onClose: () => void }) {
   const { language } = useLanguage();
   const en = language === 'en';
   const copy = en ? {
-    back:'Back', eyebrow:'Remote report', title:'Invite someone you trust', lede:'Set up their questionnaire. The link carries the details for them.',
-    yourName:'Your name', email:'Your email', invitee:'Who are you inviting?', relationship:'Their relationship to you', choose:'Choose relationship', other:'Other', otherLabel:'Type the relationship', recipientLanguage:'Questionnaire language',
-    link:'Invitation link', action:'Copy link', missing:'Complete each field and enter a valid email.', copied:'Invitation link copied.',
+    back:'Back', title:'Invite someone you trust', lede:'Set up their questionnaire. The link carries the details for them.',
+    yourName:'Your name', email:'Your email', invitee:'Who are you inviting?', relationship:'Their relationship to you', choose:'Relationship (optional)', other:'Other', otherLabel:'Type the relationship', recipientLanguage:'Questionnaire language',
+    link:'Invitation link', action:'Copy', missing:'Enter both names and a valid email.', copied:'Invitation link copied.',
   } : {
-    back:'Grįžti', eyebrow:'Nuotolinis vertinimas', title:'Pakvieskite žmogų, kuriuo pasitikite', lede:'Paruoškite jam klausimyną. Visa reikalinga informacija bus nuorodoje.',
-    yourName:'Jūsų vardas', email:'Jūsų el. paštas', invitee:'Ką kviečiate?', relationship:'Koks jo ryšys su jumis?', choose:'Pasirinkite ryšį', other:'Kita', otherLabel:'Įrašykite ryšį', recipientLanguage:'Klausimyno kalba',
-    link:'Kvietimo nuoroda', action:'Kopijuoti nuorodą', missing:'Užpildykite visus laukus ir įrašykite tinkamą el. paštą.', copied:'Kvietimo nuoroda nukopijuota.',
+    back:'Grįžti', title:'Pakvieskite žmogų, kuriuo pasitikite', lede:'Paruoškite jam klausimyną. Visa reikalinga informacija bus nuorodoje.',
+    yourName:'Jūsų vardas', email:'Jūsų el. paštas', invitee:'Ką kviečiate?', relationship:'Koks jo ryšys su jumis?', choose:'Ryšys (nebūtina)', other:'Kita', otherLabel:'Įrašykite ryšį', recipientLanguage:'Klausimyno kalba',
+    link:'Kvietimo nuoroda', action:'Kopijuoti', missing:'Įrašykite abu vardus ir tinkamą el. paštą.', copied:'Kvietimo nuoroda nukopijuota.',
   };
   const [form, setForm] = useState<Invitation>({ version: 2, from: '', to: '', relationship: '', returnEmail: '', language });
   const [relationshipKind, setRelationshipKind] = useState('');
   const [status, setStatus] = useState('');
   const url = useMemo(() => invitationUrl(form), [form]);
   const update = <K extends keyof Invitation>(key: K, value: Invitation[K]) => { setStatus(''); setForm(current => ({ ...current, [key]: value })); };
-  const valid = form.from.trim() && form.to.trim() && form.relationship.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.returnEmail);
+  const valid = form.from.trim() && form.to.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.returnEmail);
   const copyLink = async () => {
     if (!valid) { setStatus(copy.missing); return; }
     try { await navigator.clipboard.writeText(url); setStatus(copy.copied); } catch { setStatus(en?'Select and copy the link manually.':'Pažymėkite ir nukopijuokite nuorodą rankiniu būdu.'); }
@@ -44,11 +44,11 @@ export function Share({ onClose }: { onClose: () => void }) {
   const chooseRelationship = (value: string) => { setRelationshipKind(value); update('relationship', value === '__other' ? '' : value); };
 
   return <main className="share-experience">
+    <NeuralBackground/>
     <section className="share-panel">
-      <NeuralBackground/>
       <aside className="share-visual">
         <div className="share-brand"><button className="text-button" onClick={onClose}>← {copy.back}</button><span className="brand-mark">BAARS-IV</span></div>
-        <div><p className="share-eyebrow">{copy.eyebrow}</p><h1>{copy.title}</h1><p>{copy.lede}</p></div>
+        <div><h1>{copy.title}</h1><p>{copy.lede}</p></div>
         <IsometricIllustration/>
       </aside>
       <form className="share-compact-form" onSubmit={event=>{event.preventDefault();void copyLink();}} noValidate>
@@ -58,8 +58,8 @@ export function Share({ onClose }: { onClose: () => void }) {
         </div>
         <label className="outlined-field"><Icon name="group"/><input aria-label={copy.invitee} placeholder=" " value={form.to} onChange={e=>update('to',e.target.value)}/><span>{copy.invitee}</span></label>
         <div className="field-row relationship-row">
-          <label className="outlined-field"><Icon name="heart"/><select aria-label={copy.relationship} value={relationshipKind} onChange={e=>chooseRelationship(e.target.value)}><option value="" disabled>{copy.choose}</option>{relationshipSuggestions.map(option=><option key={option.value} value={option.value}>{option[language]}</option>)}<option value="__other">{copy.other}</option></select><span>{copy.relationship}</span></label>
-          <label className="outlined-field"><Icon name="language"/><select aria-label={copy.recipientLanguage} value={form.language} onChange={e=>update('language',e.target.value as LanguageMode)}><option value="en">English</option><option value="lt">Lietuvių</option></select><span>{copy.recipientLanguage}</span></label>
+          <label className="outlined-field select-only"><Icon name="heart"/><select aria-label={copy.relationship} value={relationshipKind} onChange={e=>chooseRelationship(e.target.value)}><option value="">{copy.choose}</option>{relationshipSuggestions.map(option=><option key={option.value} value={option.value}>{option[language]}</option>)}<option value="__other">{copy.other}</option></select></label>
+          <label className="outlined-field select-only"><Icon name="language"/><select aria-label={copy.recipientLanguage} value={form.language} onChange={e=>update('language',e.target.value as LanguageMode)}><option value="en">🇺🇸 English</option><option value="lt">🇱🇹 Lietuvių</option></select></label>
         </div>
         {relationshipKind==='__other'&&<label className="outlined-field custom-relationship"><Icon name="heart"/><input autoFocus aria-label={copy.otherLabel} placeholder=" " value={form.relationship} onChange={e=>update('relationship',e.target.value)}/><span>{copy.otherLabel}</span></label>}
         <label className="link-output"><span>{copy.link}</span><input aria-label={copy.link} readOnly value={valid?url:''} placeholder={valid?'':copy.missing} onFocus={event=>event.currentTarget.select()}/><button type="submit" aria-label={copy.action}><Icon name="copy"/><strong>{copy.action}</strong></button></label>

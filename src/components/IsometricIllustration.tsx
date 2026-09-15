@@ -1,55 +1,30 @@
 export function IsometricIllustration({ variant = 'forms' }: { variant?: 'forms' | 'welcome' }) {
-  const id = `iso-${variant}`;
-  return <svg className={`isometric-illustration ${variant}`} viewBox="0 0 260 210" role="img" aria-label={variant === 'welcome' ? 'Abstract questionnaire illustration' : 'Abstract invitation illustration'}>
-    <defs>
-      <linearGradient id={`${id}-paper`} x1="0" x2="1" y1="0" y2="1"><stop stopColor="#fff"/><stop offset="1" stopColor="#e8f4f0"/></linearGradient>
-      <linearGradient id={`${id}-green`} x1="0" x2="1"><stop stopColor="#2b8c78"/><stop offset="1" stopColor="#105b4d"/></linearGradient>
-      <filter id={`${id}-shadow`} x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="9" floodColor="#173c34" floodOpacity=".16"/></filter>
-    </defs>
-    <ellipse cx="132" cy="181" rx="91" ry="18" fill="#cfe2dc" opacity=".65"/>
-    <g filter={`url(#${id}-shadow)`} transform="translate(19 2)">
-      <path d="M33 102 118 54l101 58-86 50z" fill="#d8ebe6"/>
-      <path d="m33 102 100 59v23L33 125z" fill="#9bc9bd"/>
-      <path d="m133 161 86-49v23l-86 49z" fill="#63a997"/>
-      <g transform="translate(64 29) rotate(30 70 70) skewX(-30)">
-        <rect x="18" y="14" width="128" height="105" rx="9" fill={`url(#${id}-paper)`}/>
-        <rect x="35" y="33" width="54" height="8" rx="4" fill="#176b5b"/>
-        <rect x="35" y="51" width="91" height="5" rx="2.5" fill="#afc9c2"/>
-        <rect x="35" y="65" width="78" height="5" rx="2.5" fill="#c8d9d5"/>
-        <circle cx="42" cy="88" r="8" fill="#d6ece6" stroke="#176b5b" strokeWidth="3"/>
-        <path d="m38 88 3 3 6-7" fill="none" stroke="#176b5b" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-        <rect x="57" y="84" width="61" height="7" rx="3.5" fill="#afc9c2"/>
-      </g>
-    </g>
-    {variant === 'forms' ? <g transform="translate(155 19) rotate(9)" filter={`url(#${id}-shadow)`}>
-      <path d="M10 32 55 7l45 25-45 28z" fill="#fff" stroke="#7fb7aa" strokeWidth="2"/>
-      <path d="M10 32v35l45 25V60z" fill="#dff0eb" stroke="#7fb7aa" strokeWidth="2"/>
-      <path d="M100 32v35L55 92V60z" fill="#b8ddd4" stroke="#7fb7aa" strokeWidth="2"/>
-      <path d="m13 34 42 24 42-24" fill="none" stroke="#176b5b" strokeWidth="3"/>
-      <circle cx="56" cy="47" r="4" fill="#efb85b"/>
-    </g> : <g transform="translate(173 24)" filter={`url(#${id}-shadow)`}>
-      <path d="M28 3 53 18v30L28 63 3 48V18z" fill={`url(#${id}-green)`}/>
-      <circle cx="21" cy="31" r="3" fill="#fff"/><circle cx="36" cy="31" r="3" fill="#fff"/>
-      <path d="M20 42q8 7 16 0" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
-    </g>}
-    <g transform="translate(25 30) rotate(-12)"><circle cx="15" cy="15" r="15" fill="#ffd989"/><path d="m9 15 4 4 9-11" fill="none" stroke="#73501c" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></g>
+  if (variant === 'forms') {
+    return <svg className="isometric-illustration forms support-illustration" viewBox="0 0 300 220" role="img" aria-label="Two people supporting each other">
+      <defs><linearGradient id="support-platform" x1="0" x2="1"><stop stopColor="#dceee9"/><stop offset="1" stopColor="#aad4c9"/></linearGradient><filter id="support-shadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="9" stdDeviation="8" floodColor="#173c34" floodOpacity=".17"/></filter></defs>
+      <ellipse cx="151" cy="193" rx="105" ry="14" fill="#9dbeb5" opacity=".35"/>
+      <g filter="url(#support-shadow)"><path d="m49 157 93-54 111 62-94 54z" fill="url(#support-platform)"/><path d="m49 157 110 62v13L49 170z" fill="#8bc1b4"/><path d="m159 219 94-54v13l-94 54z" fill="#58a18f"/></g>
+      <g className="support-person person-left"><circle cx="117" cy="70" r="23" fill="#ffd18a"/><path d="M95 69c1-19 12-30 28-27 13 2 18 10 17 21-12-2-22-7-30-15-1 10-6 17-15 21Z" fill="#345b54"/><path d="M86 151c3-43 14-62 35-62 21 0 34 21 37 64l-34 22Z" fill="#358b79"/><path d="M109 90c5 13 18 22 35 26" fill="none" stroke="#ffd18a" strokeWidth="13" strokeLinecap="round"/><path d="M144 116c18 2 31-4 40-18" fill="none" stroke="#ffd18a" strokeWidth="13" strokeLinecap="round"/></g>
+      <g className="support-person person-right"><circle cx="192" cy="76" r="23" fill="#e9ad7d"/><path d="M170 75c-2-17 8-30 24-31 16-1 25 12 23 27-9-8-22-13-39-13 0 8-3 14-8 17Z" fill="#263f3a"/><path d="M161 155c3-43 14-61 35-61 22 0 34 21 38 63l-39 22Z" fill="#5f7cc5"/><path d="M184 96c-18 2-33 11-44 28" fill="none" stroke="#e9ad7d" strokeWidth="13" strokeLinecap="round"/><path d="M140 124c-9 3-18 1-26-6" fill="none" stroke="#e9ad7d" strokeWidth="13" strokeLinecap="round"/></g>
+      <path d="M145 55c8-13 22-13 29-4 7-9 21-9 28 1 9 14-8 29-28 42-21-14-37-26-29-39Z" fill="#f3b64f" opacity=".9"/>
+      <g className="support-spark" fill="none" stroke="#2b8c78" strokeWidth="3" strokeLinecap="round"><path d="m61 92-9-5M64 76l-7-8M239 95l10-6M237 78l7-9"/></g>
+    </svg>;
+  }
+
+  return <svg className="isometric-illustration welcome" viewBox="0 0 260 210" role="img" aria-label="Abstract questionnaire illustration">
+    <defs><linearGradient id="welcome-paper" x1="0" x2="1" y1="0" y2="1"><stop stopColor="#fff"/><stop offset="1" stopColor="#e8f4f0"/></linearGradient><linearGradient id="welcome-green" x1="0" x2="1"><stop stopColor="#2b8c78"/><stop offset="1" stopColor="#105b4d"/></linearGradient><filter id="welcome-shadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="9" floodColor="#173c34" floodOpacity=".16"/></filter></defs>
+    <ellipse cx="132" cy="181" rx="91" ry="18" fill="#cfe2dc" opacity=".65"/><g filter="url(#welcome-shadow)" transform="translate(19 2)"><path d="M33 102 118 54l101 58-86 50z" fill="#d8ebe6"/><path d="m33 102 100 59v23L33 125z" fill="#9bc9bd"/><path d="m133 161 86-49v23l-86 49z" fill="#63a997"/><g transform="translate(64 29) rotate(30 70 70) skewX(-30)"><rect x="18" y="14" width="128" height="105" rx="9" fill="url(#welcome-paper)"/><rect x="35" y="33" width="54" height="8" rx="4" fill="#176b5b"/><rect x="35" y="51" width="91" height="5" rx="2.5" fill="#afc9c2"/><rect x="35" y="65" width="78" height="5" rx="2.5" fill="#c8d9d5"/><circle cx="42" cy="88" r="8" fill="#d6ece6" stroke="#176b5b" strokeWidth="3"/><path d="m38 88 3 3 6-7" fill="none" stroke="#176b5b" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><rect x="57" y="84" width="61" height="7" rx="3.5" fill="#afc9c2"/></g></g>
+    <g transform="translate(173 24)" filter="url(#welcome-shadow)"><path d="M28 3 53 18v30L28 63 3 48V18z" fill="url(#welcome-green)"/><circle cx="21" cy="31" r="3" fill="#fff"/><circle cx="36" cy="31" r="3" fill="#fff"/><path d="M20 42q8 7 16 0" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round"/></g><g transform="translate(25 30) rotate(-12)"><circle cx="15" cy="15" r="15" fill="#ffd989"/><path d="m9 15 4 4 9-11" fill="none" stroke="#73501c" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></g>
   </svg>;
 }
 
 export function NeuralBackground() {
-  const connections = [
-    'M326 322 410 260 488 308 565 222 650 286 742 218 838 300',
-    'M292 410 386 370 468 438 555 350 646 410 730 344 890 402',
-    'M336 506 426 474 505 548 600 466 695 542 790 472 872 514',
-    'M410 260 386 370 426 474M488 308 468 438 505 548M565 222 555 350 600 466M650 286 646 410 695 542M742 218 730 344 790 472',
-    'M326 322 292 410 336 506M838 300 890 402 872 514M505 548 470 620M695 542 730 616',
-  ];
-  const nodes = [[326,322],[410,260],[488,308],[565,222],[650,286],[742,218],[838,300],[292,410],[386,370],[468,438],[555,350],[646,410],[730,344],[890,402],[336,506],[426,474],[505,548],[600,466],[695,542],[790,472],[872,514],[470,620],[730,616]];
+  const neurons = [{x:92,y:114,r:-12,s:1.12},{x:372,y:92,r:26,s:.82},{x:705,y:105,r:-32,s:.95},{x:1055,y:126,r:14,s:1.15},{x:116,y:405,r:38,s:1},{x:1082,y:397,r:-24,s:1.08},{x:220,y:695,r:-18,s:1.18},{x:602,y:716,r:24,s:.9},{x:1010,y:688,r:-40,s:1.08}];
+  const signalPaths = ['M138 126C240 57 294 145 382 103S565 39 696 115','M753 111c93-48 176-26 280 18','M127 451c70 64 135 101 181 189','M1054 442c-75 66-108 136-74 224','M271 682c116-43 205 67 320 35s231-10 390-25'];
   return <svg className="neural-background" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <path className="brain-outline" d="M600 137C535 91 449 111 413 177c-75-4-130 48-126 116-59 39-59 126 0 166-8 76 50 139 125 137 39 70 132 78 188 18 56 60 149 52 188-18 75 2 133-61 125-137 59-40 59-127 0-166 4-68-51-120-126-116-36-66-122-86-187-40Z"/>
-    <path className="brain-divider" d="M600 139c-23 54 22 81 0 132s25 81 0 132 25 83 0 134 18 58 0 77"/>
-    <g className="neural-connections">{connections.map((path,index)=><path key={path} className={`neural-path p${index+1}`} d={path}/>)}</g>
-    <g className="neural-nodes">{nodes.map(([cx,cy],index)=><g key={`${cx}-${cy}`} className={`neuron n${index%8+1}`}><circle className="neuron-halo" cx={cx} cy={cy} r="15"/><circle cx={cx} cy={cy} r="5"/></g>)}</g>
-    <g className="neural-sparks"><circle cx="208" cy="248" r="4"/><circle cx="1010" cy="328" r="5"/><circle cx="225" cy="590" r="3"/><circle cx="980" cy="575" r="4"/></g>
+    <defs><g id="neuron-cell"><g className="neuron-branches" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M0 0C-17-18-29-31-45-44m14 12-3-22m3 22-22 0M-8-5C-26 4-42 14-61 9m20-7-9 18m9-18-18-8M4-8C7-30 14-47 30-61m-17 22 21-7m-21 7-7-20M11 3c20-4 39-4 57 9m-24-8 10-17m-10 17 21 25" strokeWidth="3.3"/><path className="neuron-axon" d="M9 10c21 16 35 36 55 50s43 13 62 32" strokeWidth="4"/><path d="m116 84 17-7m-17 7 1 19m9-12 17 8" strokeWidth="3"/></g><path className="neuron-soma" d="M-15-16C-4-26 15-21 22-7c7 13-2 30-16 34-15 4-31-7-31-22 0-8 3-15 10-21Z"/><circle className="neuron-nucleus" cx="1" cy="2" r="7"/><circle className="neuron-pulse" cx="1" cy="2" r="29"/></g>{signalPaths.map((path,index)=><path key={path} id={`signal-path-${index}`} d={path}/>)}</defs>
+    <g className="neuron-field">{neurons.map((neuron,index)=><use key={`${neuron.x}-${neuron.y}`} className={`neuron-cell neuron-cell-${index+1}`} href="#neuron-cell" transform={`translate(${neuron.x} ${neuron.y}) rotate(${neuron.r}) scale(${neuron.s})`}/>)}</g>
+    <g className="signal-lines" fill="none">{signalPaths.map((path,index)=><use key={path} href={`#signal-path-${index}`} className={`signal-line signal-line-${index+1}`}/>)}</g>
+    <g className="traveling-signals">{signalPaths.map((_,index)=><circle key={index} className={`traveling-signal traveling-signal-${index+1}`} r="5"><animateMotion dur={`${4.4+index*.65}s`} begin={`${index*-1.13}s`} repeatCount="indefinite"><mpath href={`#signal-path-${index}`}/></animateMotion></circle>)}</g>
   </svg>;
 }
