@@ -45,9 +45,10 @@ export function Share({ onClose }: { onClose: () => void }) {
   const chooseRelationship = (value: string) => { setRelationshipKind(value); update('relationship', value === '__other' ? '' : value); };
 
   return <main className="share-experience material-page">
+    <div className="mobile-route-toolbar"><button className="text-button" onClick={onClose}>← {copy.back}</button><span className="brand-mark">BAARS-IV</span></div>
     <section className="share-panel">
       <aside className="share-visual">
-        <div className="share-brand"><button className="text-button" onClick={onClose}>← {copy.back}</button><span className="brand-mark">BAARS-IV</span></div>
+        <div className="share-brand desktop-route-toolbar"><button className="text-button" onClick={onClose}>← {copy.back}</button><span className="brand-mark">BAARS-IV</span></div>
         <div><h1>{copy.title}</h1><p>{copy.lede}</p></div>
         <IsometricIllustration/>
       </aside>
