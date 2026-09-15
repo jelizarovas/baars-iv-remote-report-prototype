@@ -145,3 +145,23 @@ html[data-theme=dark] .app-layout{background:#0f1916}html[data-theme=dark] .app-
   .mobile-route-toolbar .brand-mark{padding-inline:5px;font-size:.51rem}
   .display-controls .language-picker{width:86px}
 }
+
+/* Mobile toolbar order: route navigation, display controls, then logout. */
+@media(max-width:720px){
+  .review-lock{left:auto;right:6px}
+  .display-controls{right:48px}
+  .mobile-route-toolbar{left:6px;max-width:126px;gap:5px}
+  .mobile-route-toolbar .text-button{height:38px;padding:0 8px;border:1px solid var(--line);border-radius:12px;background:#fffffff2;box-shadow:0 4px 16px #173c3414}
+  .mobile-route-toolbar .brand-mark{padding-inline:6px}
+  .share-experience:focus-within .share-panel{grid-template-rows:108px minmax(0,1fr)}
+  .share-experience:focus-within .share-visual{padding:9px 12px 6px}
+  .share-experience:focus-within .share-visual h1{max-width:calc(100% - 76px);margin:0 0 4px;font-size:1.35rem;line-height:1.04;white-space:normal;overflow:visible;text-overflow:clip}
+  .share-experience:focus-within .share-visual>div>p:not(.share-eyebrow){display:-webkit-box;max-width:calc(100% - 76px);-webkit-line-clamp:1;font-size:.64rem;line-height:1.25}
+  .share-experience:focus-within .share-visual .isometric-illustration{right:2px;bottom:2px;width:72px;max-height:66px}
+}
+
+@media(max-width:350px){
+  .mobile-route-toolbar{max-width:120px}
+  .mobile-route-toolbar .text-button{padding-inline:6px}
+  .mobile-route-toolbar .brand-mark{padding-inline:4px}
+}
