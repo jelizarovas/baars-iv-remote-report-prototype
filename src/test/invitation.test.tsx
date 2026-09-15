@@ -64,8 +64,8 @@ describe('invitation links', () => {
   it('shows a welcome page with fill and invite choices for a plain URL', () => {
     location.hash = '';
     render(<App />);
-    expect(screen.getByRole('button', { name: /Fill out the questionnaire/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Invite someone to fill it out/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Answer about someone/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Ask someone to answer about me/ })).toBeInTheDocument();
   });
 
   it('uses a working relationship select on the invitation page', async () => {

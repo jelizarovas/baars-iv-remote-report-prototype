@@ -28,8 +28,12 @@ export function AccessGate({
   const [allowed, setAllowed] = useState(() => development && !configuredHash || sessionStorage.getItem(storageKey) === configuredHash);
   const [value, setValue] = useState('');
   const [message, setMessage] = useState('');
+  const changeAccess = (update: () => void) => {
+    const start = (document as Document & { startViewTransition?: (callback: () => void) => void }).startViewTransition;
+    if (start && !matchMedia('(prefers-reduced-motion: reduce)').matches) start.call(document, update); else update();
+  };
 
-  if (allowed) return children;
+  if (allowed) return <><button className="review-lock" type="button" onClick={()=>changeAccess(()=>{sessionStorage.removeItem(storageKey);setAllowed(false);setValue('')})} aria-label={language==='en'?'Lock review and return to password':'Užrakinti peržiūrą ir grįžti prie slaptažodžio'}><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>{language==='en'?'Lock review':'Užrakinti'}</span></button><div className="page-stage">{children}</div></>;
 
   if (!configuredHash) return <main className="gate-shell"><NeuralBackground/><section className="gate-stage"><div className="gate-card">
     <div className="brand-mark">BAARS-IV</div><h1>{copy.unavailable}</h1><p>{copy.unavailableBody}</p>
@@ -41,8 +45,7 @@ export function AccessGate({
       setMessage(copy.error);
       return;
     }
-    sessionStorage.setItem(storageKey, configuredHash);
-    setAllowed(true);
+    changeAccess(()=>{sessionStorage.setItem(storageKey, configuredHash);setAllowed(true)});
   };
 
   return <main className="gate-shell"><NeuralBackground/><section className="gate-stage"><div className="gate-card">

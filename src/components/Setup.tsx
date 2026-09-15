@@ -25,7 +25,7 @@ export function Setup({onStart,initial,onOpenShare,onBack}:{onStart:(s:Session)=
  const update=<K extends keyof Respondent>(key:K,value:Respondent[K])=>setForm(f=>({...f,[key]:value}));
  const valid=()=>{if(!currentForm.personName.trim()||!currentForm.respondentName.trim()){setError(copy.missing);return false}return true};
  const start=(fresh:boolean)=>{if(!valid())return; const existing=loadSession(currentForm); onStart(!fresh&&existing?existing:makeSession(currentForm));};
- return <main className="setup-shell"><section className="setup-card">
+ return <main className="setup-shell material-page"><section className="setup-card">
   <div className="setup-heading"><button className="text-button" onClick={onBack}>← {copy.about}</button><div className="brand-mark">BAARS-IV</div><button className="text-button" onClick={onOpenShare}>{copy.invite}</button></div><h1>{copy.title}</h1><p className="lede">{copy.lede}</p>
   {initial&&<div className="invite-banner"><strong>{copy.invited}</strong><span>{copy.asked(currentForm.respondentName,currentForm.personName)}</span></div>}
   <div className="form-grid">

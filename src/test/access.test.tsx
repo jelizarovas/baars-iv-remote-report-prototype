@@ -13,6 +13,9 @@ describe('review access gate', () => {
     fireEvent.change(screen.getByLabelText(/PIN or password/), { target: { value: 'review' } });
     fireEvent.click(screen.getByRole('button', { name: /Open review/ }));
     await waitFor(() => expect(screen.getByText('Private review')).toBeInTheDocument());
+    fireEvent.click(screen.getByRole('button', { name: /Lock review and return to password/ }));
+    expect(screen.getByRole('heading', { name: /Enter the review code/ })).toBeInTheDocument();
+    expect(screen.queryByText('Private review')).not.toBeInTheDocument();
   });
 
   it('fails closed in production when no hash is configured', () => {

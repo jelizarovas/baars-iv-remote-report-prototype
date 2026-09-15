@@ -44,7 +44,7 @@ export function Share({ onClose }: { onClose: () => void }) {
   };
   const chooseRelationship = (value: string) => { setRelationshipKind(value); update('relationship', value === '__other' ? '' : value); };
 
-  return <main className="share-experience">
+  return <main className="share-experience material-page">
     <NeuralBackground/>
     <section className="share-panel">
       <aside className="share-visual">

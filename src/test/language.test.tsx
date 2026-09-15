@@ -9,12 +9,12 @@ describe('language selection', () => {
 
   it('shows English by default and one language at a time', async () => {
     render(<LanguageProvider><LanguagePicker/><Welcome onStart={() => {}} onInvite={() => {}}/></LanguageProvider>);
-    expect(screen.getByRole('heading', { name: 'Behavior questionnaire' })).toBeInTheDocument();
-    expect(screen.queryByText('Elgesio klausimynas')).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Choose how to complete the questionnaire' })).toBeInTheDocument();
+    expect(screen.queryByText('Pasirinkite, kaip pildysite klausimyną')).not.toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Language' }));
     await userEvent.click(screen.getByRole('option', { name: 'Lietuvių' }));
-    expect(screen.getByRole('heading', { name: 'Elgesio klausimynas' })).toBeInTheDocument();
-    expect(screen.queryByText('Behavior questionnaire')).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Pasirinkite, kaip pildysite klausimyną' })).toBeInTheDocument();
+    expect(screen.queryByText('Choose how to complete the questionnaire')).not.toBeInTheDocument();
   });
 
   it('switches between light and dark mode', async () => {
