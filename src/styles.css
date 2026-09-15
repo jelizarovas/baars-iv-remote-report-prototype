@@ -167,3 +167,28 @@ html[data-theme=dark] .app-layout{background:#0f1916}html[data-theme=dark] .app-
 }
 
 html[data-theme=dark] .mobile-route-toolbar .brand-mark{background:transparent}
+
+/* Keep setup inside one desktop viewport and preserve the primary action. */
+.setup-actions .primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.setup-actions .primary:hover{background:var(--brand-dark)}
+@media(min-width:721px){
+  .setup-shell{height:100dvh;min-height:0;overflow:hidden;padding:58px 16px 16px;align-items:center}
+  .setup-card{width:min(760px,100%);max-height:calc(100dvh - 74px);overflow:auto;padding:24px 36px}
+  .setup-card h1{margin:10px 0 5px;font-size:2.15rem}
+  .setup-card .lede{margin-bottom:18px;line-height:1.4}
+  .setup-card .form-grid{grid-template-columns:1fr 1fr;gap:13px 14px}
+  .setup-card .form-grid input,.setup-card .form-grid select{min-height:46px;margin-top:5px}
+  .setup-card .setup-session-field{grid-column:1/-1}
+  .setup-card .setup-actions{grid-template-columns:repeat(3,1fr);margin-top:16px}
+  .setup-card .setup-actions .primary{grid-column:auto}
+  .setup-card .saved{margin-top:18px;padding-top:14px}
+}
+@media(max-width:720px){
+  .setup-shell{height:100dvh;min-height:0;overflow:hidden;padding:50px 6px 6px}
+  .setup-card{max-height:calc(100dvh - 56px);overflow:auto;padding:18px 16px}
+  .setup-card h1{margin:6px 0 4px;font-size:1.7rem}
+  .setup-card .lede{margin-bottom:16px;font-size:.82rem;line-height:1.35}
+  .setup-card .form-grid{gap:12px}
+  .setup-card .form-grid input,.setup-card .form-grid select{min-height:46px;margin-top:4px}
+  .setup-card .setup-actions{margin-top:16px}
+}
