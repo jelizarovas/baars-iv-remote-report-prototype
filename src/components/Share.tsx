@@ -25,11 +25,11 @@ export function Share({ onClose }: { onClose: () => void }) {
   const en = language === 'en';
   const copy = en ? {
     back:'Back', title:'Ask someone who knows you well', lede:"They'll answer this questionnaire about you and return the completed PDF to your email.",
-    yourName:'Your name', email:'Your email', invitee:'Who are you inviting?', relationship:'Their relationship to you', choose:'Relationship', other:'Other', otherLabel:'Type the relationship', recipientLanguage:'Questionnaire language',
+    yourName:'Your name', yourNamePlaceholder:'e.g. Alex Morgan', email:'Your email', emailPlaceholder:'alex@example.com', invitee:'Who are you inviting?', inviteePlaceholder:'e.g. Jordan Lee', relationship:'Their relationship to you', choose:'Relationship', other:'Other', otherLabel:'Type the relationship', recipientLanguage:'Questionnaire language',
     link:'Invitation link', action:'Copy', missing:'Enter both names and a valid email.', copied:'Invitation link copied.',
   } : {
     back:'Grįžti', title:'Paprašykite gerai jus pažįstančio žmogaus', lede:'Jis atsakys į klausimus apie jus ir grąžins užpildytą PDF jūsų el. paštu.',
-    yourName:'Jūsų vardas', email:'Jūsų el. paštas', invitee:'Ką kviečiate?', relationship:'Koks jo ryšys su jumis?', choose:'Ryšys', other:'Kita', otherLabel:'Įrašykite ryšį', recipientLanguage:'Klausimyno kalba',
+    yourName:'Jūsų vardas', yourNamePlaceholder:'pvz., Jonas Jonaitis', email:'Jūsų el. paštas', emailPlaceholder:'jonas@example.com', invitee:'Ką kviečiate?', inviteePlaceholder:'pvz., Ona Onaitė', relationship:'Koks jo ryšys su jumis?', choose:'Ryšys', other:'Kita', otherLabel:'Įrašykite ryšį', recipientLanguage:'Klausimyno kalba',
     link:'Kvietimo nuoroda', action:'Kopijuoti', missing:'Įrašykite abu vardus ir tinkamą el. paštą.', copied:'Kvietimo nuoroda nukopijuota.',
   };
   const [form, setForm] = useState<Invitation>({ version: 2, from: '', to: '', relationship: '', returnEmail: '', language });
@@ -54,10 +54,10 @@ export function Share({ onClose }: { onClose: () => void }) {
       </aside>
       <form className="share-compact-form" onSubmit={event=>{event.preventDefault();void copyLink();}} noValidate>
         <div className="field-row">
-          <label className="outlined-field"><Icon name="person"/><input aria-label={copy.yourName} placeholder=" " value={form.from} onChange={e=>update('from',e.target.value)}/><span>{copy.yourName}</span></label>
-          <label className="outlined-field"><Icon name="mail"/><input aria-label={copy.email} placeholder=" " type="email" inputMode="email" autoComplete="email" value={form.returnEmail} onChange={e=>update('returnEmail',e.target.value)}/><span>{copy.email}</span></label>
+          <label className="outlined-field"><Icon name="person"/><input aria-label={copy.yourName} placeholder={copy.yourNamePlaceholder} value={form.from} onChange={e=>update('from',e.target.value)}/><span>{copy.yourName}</span></label>
+          <label className="outlined-field"><Icon name="mail"/><input aria-label={copy.email} placeholder={copy.emailPlaceholder} type="email" inputMode="email" autoComplete="email" value={form.returnEmail} onChange={e=>update('returnEmail',e.target.value)}/><span>{copy.email}</span></label>
         </div>
-        <label className="outlined-field"><Icon name="group"/><input aria-label={copy.invitee} placeholder=" " value={form.to} onChange={e=>update('to',e.target.value)}/><span>{copy.invitee}</span></label>
+        <label className="outlined-field"><Icon name="group"/><input aria-label={copy.invitee} placeholder={copy.inviteePlaceholder} value={form.to} onChange={e=>update('to',e.target.value)}/><span>{copy.invitee}</span></label>
         <div className="field-row relationship-row">
           <label className="outlined-field select-only"><Icon name="heart"/><select aria-label={copy.relationship} value={relationshipKind} onChange={e=>chooseRelationship(e.target.value)}><option value="">{copy.choose}</option>{relationshipSuggestions.map(option=><option key={option.value} value={option.value}>{option[language]}</option>)}<option value="__other">{copy.other}</option></select></label>
           <label className="outlined-field select-only"><Icon name="language"/><select aria-label={copy.recipientLanguage} value={form.language} onChange={e=>update('language',e.target.value as LanguageMode)}><option value="en">🇺🇸 English</option><option value="lt">🇱🇹 Lietuvių</option></select></label>

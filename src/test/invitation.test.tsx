@@ -86,6 +86,15 @@ describe('invitation links', () => {
     history.replaceState(null, '', '/');
   });
 
+  it('shows example values in empty invitation fields', () => {
+    history.replaceState(null, '', '/invite');
+    render(<App />);
+    expect(screen.getByPlaceholderText('e.g. Alex Morgan')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('alex@example.com')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('e.g. Jordan Lee')).toBeInTheDocument();
+    history.replaceState(null, '', '/');
+  });
+
   it('creates a link while the optional relationship is blank', () => {
     history.replaceState(null, '', '/invite');
     render(<App />);
