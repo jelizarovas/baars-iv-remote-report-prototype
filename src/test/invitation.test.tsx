@@ -27,11 +27,11 @@ describe('invitation links', () => {
     expect(decodeInvitation(encodeInvitation(optionalRelationship))).toEqual(optionalRelationship);
   });
 
-  it('puts personal details in the fragment rather than the server request path', () => {
+  it('puts the encoded invitation in a respondent route', () => {
     const url = invitationUrl(invitation, { origin: 'https://example.github.io', pathname: '/baars/' } as Location);
-    expect(url).toMatch(/^https:\/\/example\.github\.io\/baars\/#invite=/);
-    expect(url.split('#')[0]).not.toContain(invitation.from);
-    expect(url).not.toContain('?');
+    expect(url).toMatch(/^https:\/\/example\.github\.io\/baars\/respond\//);
+    expect(url).not.toContain(invitation.from);
+    expect(url).not.toContain('#');
   });
 
   it('creates a prefilled respondent and leaves answers out of the invitation', () => {
@@ -53,46 +53,46 @@ describe('invitation links', () => {
   });
 
   it('prefills the intended respondent when an invitation opens', () => {
-    location.hash = `#invite=${encodeInvitation(invitation)}`;
+    history.replaceState(null, '', `/respond/${encodeInvitation(invitation)}`);
     render(<App />);
     expect(screen.getByRole('textbox', { name: /Name of person being rated/ })).toHaveValue('Vertinamas Žmogus');
     expect(screen.getByRole('textbox', { name: /Your full name/ })).toHaveValue('Pakviestas Asmuo');
     expect(screen.getByRole('combobox', { name: /Relationship to the person/ })).toHaveValue('Coworker');
-    location.hash = '';
+    history.replaceState(null, '', '/');
   });
 
   it('shows a welcome page with fill and invite choices for a plain URL', () => {
-    location.hash = '';
+    history.replaceState(null, '', '/');
     render(<App />);
     expect(screen.getByRole('button', { name: /Answer about someone/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Ask someone to answer about me/ })).toBeInTheDocument();
   });
 
   it('uses a working relationship select on the invitation page', async () => {
-    location.hash = '#share';
+    history.replaceState(null, '', '/invite');
     render(<App />);
     const relationship = screen.getByRole('combobox', { name: 'Their relationship to you' });
     await userEvent.selectOptions(relationship, 'Mother');
     expect(relationship).toHaveValue('Mother');
-    location.hash = '';
+    history.replaceState(null, '', '/');
   });
 
   it('shows the invitation link with an explicit copy action', () => {
-    location.hash = '#share';
+    history.replaceState(null, '', '/invite');
     render(<App />);
     expect(screen.getByRole('textbox', { name: 'Invitation link' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Copy' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /share invitation/i })).not.toBeInTheDocument();
-    location.hash = '';
+    history.replaceState(null, '', '/');
   });
 
   it('creates a link while the optional relationship is blank', () => {
-    location.hash = '#share';
+    history.replaceState(null, '', '/invite');
     render(<App />);
     fireEvent.change(screen.getByRole('textbox', { name: 'Your name' }), { target: { value: 'Rated Person' } });
     fireEvent.change(screen.getByRole('textbox', { name: 'Your email' }), { target: { value: 'results@example.test' } });
     fireEvent.change(screen.getByRole('textbox', { name: 'Who are you inviting?' }), { target: { value: 'Respondent' } });
-    expect((screen.getByRole('textbox', { name: 'Invitation link' }) as HTMLInputElement).value).toContain('#invite=');
-    location.hash = '';
+    expect((screen.getByRole('textbox', { name: 'Invitation link' }) as HTMLInputElement).value).toContain('/respond/');
+    history.replaceState(null, '', '/');
   });
 });

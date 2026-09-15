@@ -48,13 +48,14 @@ export function decodeInvitation(value: string): Invitation | undefined {
   }
 }
 
-export function invitationFromHash(hash = window.location.hash): Invitation | undefined {
-  const match = hash.match(/^#invite=([^&]+)$/);
+export function invitationFromPath(pathname = window.location.pathname): Invitation | undefined {
+  const match = pathname.match(/\/respond\/([^/?#]+)\/?$/);
   return match ? decodeInvitation(match[1]) : undefined;
 }
 
 export function invitationUrl(invitation: Invitation, locationLike: Pick<Location, 'origin' | 'pathname'> = window.location): string {
-  return `${locationLike.origin}${locationLike.pathname}#invite=${encodeInvitation(invitation)}`;
+  const basePath = locationLike.pathname.replace(/\/(?:start|invite|questionnaire|review|respond\/[^/]+)\/?$/, '/');
+  return `${locationLike.origin}${basePath.endsWith('/') ? basePath : `${basePath}/`}respond/${encodeInvitation(invitation)}`;
 }
 
 export function respondentFromInvitation(invitation: Invitation, date = new Date().toLocaleDateString('en-CA')): Respondent {

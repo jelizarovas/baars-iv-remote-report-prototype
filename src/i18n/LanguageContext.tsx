@@ -1,6 +1,6 @@
 import { createContext, type ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import type { LanguageMode } from '../types';
-import { invitationFromHash } from '../lib/invitation';
+import { invitationFromPath } from '../lib/invitation';
 
 const storageKey = 'baars-iv:display-language';
 const themeStorageKey = 'baars-iv:theme';
@@ -10,7 +10,7 @@ const ThemeContext = createContext<{ theme: Theme; setTheme: (theme: Theme) => v
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<LanguageMode>(() => {
-    const invited = invitationFromHash()?.language;
+    const invited = invitationFromPath()?.language;
     if (invited) return invited;
     return localStorage.getItem(storageKey) === 'lt' ? 'lt' : 'en';
   });

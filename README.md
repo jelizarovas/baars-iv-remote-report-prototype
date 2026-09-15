@@ -17,8 +17,8 @@ An invitation contains the rated person's name, the respondent's name, an option
 
 There is no account, database, analytics service, or form submission endpoint.
 
-- Invitation details are encoded after `#invite=` in the URL.
-- GitHub Pages does not receive URL fragments.
+- Invitation details are encoded in a `/respond/:payload` route.
+- The app has no database, but the invitation URL itself contains the names, relationship, return email, and language.
 - Anyone who has an invitation link can decode its contents.
 - Unfinished answers are saved in the browser's `localStorage` on the respondent's device.
 - Answers leave the device only when the respondent downloads or sends a file.

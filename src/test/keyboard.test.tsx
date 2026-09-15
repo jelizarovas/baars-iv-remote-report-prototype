@@ -8,7 +8,7 @@ import type { Session } from '../types';
 function baseSession(id='current-1'):Session{const s=makeSession({personName:'Rated Person',respondentName:'Test Respondent',relationship:'Friend',date:'2026-07-18',sessionName:'Saved test'});s.currentQuestionId=id;return s;}
 async function open(s:Session){saveSession(s);render(<App/>);await userEvent.click(screen.getByRole('button',{name:/Answer about someone/}));await userEvent.click(screen.getByRole('button',{name:/Saved test/}));}
 describe('global keyboard controls',()=>{
- beforeEach(()=>location.hash='');
+ beforeEach(()=>history.replaceState(null,'','/'));
  it('selects scores with number keys but does not auto-advance',async()=>{await open(baseSession());fireEvent.keyDown(window,{key:'3'});expect(screen.getByRole('radio',{name:/3/})).toHaveAttribute('aria-checked','true');expect(screen.getByText('Question 1')).toBeInTheDocument();});
  it('Enter moves forward after an answer',async()=>{const s=baseSession();s.answers['current-1']=1;await open(s);fireEvent.keyDown(window,{key:'Enter'});expect(screen.getByText('Question 2')).toBeInTheDocument();});
  it('Space moves forward and prevents scrolling navigation defaults',async()=>{const s=baseSession();s.answers['current-1']=1;await open(s);expect(fireEvent.keyDown(window,{key:' '})).toBe(false);expect(screen.getByText('Question 2')).toBeInTheDocument();});
