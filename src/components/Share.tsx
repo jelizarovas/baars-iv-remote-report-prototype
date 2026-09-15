@@ -5,7 +5,7 @@ import { relationshipSuggestions } from '../lib/relationship';
 import { useLanguage } from '../i18n/LanguageContext';
 import { IsometricIllustration, NeuralBackground } from './IsometricIllustration';
 
-type IconName = 'person' | 'mail' | 'group' | 'heart' | 'language' | 'copy';
+type IconName = 'person' | 'mail' | 'group' | 'heart' | 'language' | 'copy' | 'link';
 
 function Icon({ name }: { name: IconName }) {
   const paths: Record<IconName, React.ReactNode> = {
@@ -15,6 +15,7 @@ function Icon({ name }: { name: IconName }) {
     heart: <path d="M12 20S4 15.4 4 9.4C4 6 8.2 4.6 12 8.3 15.8 4.6 20 6 20 9.4 20 15.4 12 20 12 20Z"/>,
     language: <><circle cx="12" cy="12" r="9"/><path d="M3.5 12h17M12 3c2.5 2.5 3.8 5.5 3.8 9S14.5 18.5 12 21M12 3C9.5 5.5 8.2 8.5 8.2 12S9.5 18.5 12 21"/></>,
     copy: <><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></>,
+    link: <><path d="m9.5 14.5 5-5"/><path d="M7.2 17.8 5.5 19.5a3.5 3.5 0 0 1-5-5l4-4a3.5 3.5 0 0 1 5 0M16.8 6.2l1.7-1.7a3.5 3.5 0 0 1 5 5l-4 4a3.5 3.5 0 0 1-5 0" transform="translate(-1 -1)"/></>,
   };
   return <svg className="ui-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{paths[name]}</svg>;
 }
@@ -62,7 +63,7 @@ export function Share({ onClose }: { onClose: () => void }) {
           <label className="outlined-field select-only"><Icon name="language"/><select aria-label={copy.recipientLanguage} value={form.language} onChange={e=>update('language',e.target.value as LanguageMode)}><option value="en">🇺🇸 English</option><option value="lt">🇱🇹 Lietuvių</option></select></label>
         </div>
         {relationshipKind==='__other'&&<label className="outlined-field custom-relationship"><Icon name="heart"/><input autoFocus aria-label={copy.otherLabel} placeholder=" " value={form.relationship} onChange={e=>update('relationship',e.target.value)}/><span>{copy.otherLabel}</span></label>}
-        <label className="link-output"><span>{copy.link}</span><input aria-label={copy.link} readOnly value={valid?url:''} placeholder={valid?'':copy.missing} onFocus={event=>event.currentTarget.select()}/><button type="submit" aria-label={copy.action}><Icon name="copy"/><strong>{copy.action}</strong></button></label>
+        <label className="link-output"><span>{copy.link}</span><Icon name="link"/><input aria-label={copy.link} readOnly value={valid?url:''} placeholder={valid?'':copy.missing} onFocus={event=>event.currentTarget.select()}/><button type="submit" aria-label={copy.action}><Icon name="copy"/><strong>{copy.action}</strong></button></label>
         <p className={`share-feedback ${status===copy.copied?'success':''}`} aria-live="polite">{status}</p>
       </form>
     </section>

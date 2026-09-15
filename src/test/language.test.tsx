@@ -11,7 +11,8 @@ describe('language selection', () => {
     render(<LanguageProvider><LanguagePicker/><Welcome onStart={() => {}} onInvite={() => {}}/></LanguageProvider>);
     expect(screen.getByRole('heading', { name: 'Behavior questionnaire' })).toBeInTheDocument();
     expect(screen.queryByText('Elgesio klausimynas')).not.toBeInTheDocument();
-    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Language' }), 'lt');
+    await userEvent.click(screen.getByRole('button', { name: 'Language' }));
+    await userEvent.click(screen.getByRole('option', { name: 'Lietuvių' }));
     expect(screen.getByRole('heading', { name: 'Elgesio klausimynas' })).toBeInTheDocument();
     expect(screen.queryByText('Behavior questionnaire')).not.toBeInTheDocument();
   });

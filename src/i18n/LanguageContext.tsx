@@ -1,4 +1,4 @@
-import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, type ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import type { LanguageMode } from '../types';
 import { invitationFromHash } from '../lib/invitation';
 
@@ -40,13 +40,20 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
 export function LanguagePicker() {
   const { language, setLanguage } = useLanguage();
-  return <label className="language-picker">
-    <span className="sr-only">{language === 'en' ? 'Language' : 'Kalba'}</span>
-    <select aria-label={language === 'en' ? 'Language' : 'Kalba'} value={language} onChange={event => setLanguage(event.target.value as LanguageMode)}>
-      <option value="en">🇺🇸 English</option>
-      <option value="lt">🇱🇹 Lietuvių</option>
-    </select>
-  </label>;
+  const [open, setOpen] = useState(false);
+  const pickerRef = useRef<HTMLDivElement>(null);
+  const label = language === 'en' ? 'Language' : 'Kalba';
+  const options: { value: LanguageMode; name: string }[] = [{ value: 'en', name: 'English' }, { value: 'lt', name: 'Lietuvių' }];
+  useEffect(() => {
+    const closeOutside = (event: PointerEvent) => { if (!pickerRef.current?.contains(event.target as Node)) setOpen(false); };
+    const closeWithEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') setOpen(false); };
+    document.addEventListener('pointerdown', closeOutside); document.addEventListener('keydown', closeWithEscape);
+    return () => { document.removeEventListener('pointerdown', closeOutside); document.removeEventListener('keydown', closeWithEscape); };
+  }, []);
+  return <div className={`language-picker ${open?'open':''}`} ref={pickerRef}>
+    <button className="language-trigger" type="button" aria-label={label} aria-haspopup="listbox" aria-expanded={open} onClick={()=>setOpen(value=>!value)}><span className={`language-flag flag-${language}`} aria-hidden="true"/><strong>{options.find(option=>option.value===language)?.name}</strong><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg></button>
+    {open&&<div className="language-menu" role="listbox" aria-label={label}>{options.map(option=><button key={option.value} type="button" role="option" aria-selected={language===option.value} onClick={()=>{setLanguage(option.value);setOpen(false)}}><span className={`language-flag flag-${option.value}`} aria-hidden="true"/><span>{option.name}</span>{language===option.value&&<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 10 3 3 7-7"/></svg>}</button>)}</div>}
+  </div>;
 }
 
 function ThemePicker() {
