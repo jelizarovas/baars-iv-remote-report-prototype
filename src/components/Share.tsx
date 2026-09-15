@@ -3,7 +3,7 @@ import { invitationUrl, type Invitation } from '../lib/invitation';
 import type { LanguageMode } from '../types';
 import { relationshipSuggestions } from '../lib/relationship';
 import { useLanguage } from '../i18n/LanguageContext';
-import { IsometricIllustration, NeuralBackground } from './IsometricIllustration';
+import { IsometricIllustration } from './IsometricIllustration';
 
 type IconName = 'person' | 'mail' | 'group' | 'heart' | 'language' | 'copy' | 'link';
 
@@ -45,7 +45,6 @@ export function Share({ onClose }: { onClose: () => void }) {
   const chooseRelationship = (value: string) => { setRelationshipKind(value); update('relationship', value === '__other' ? '' : value); };
 
   return <main className="share-experience material-page">
-    <NeuralBackground/>
     <section className="share-panel">
       <aside className="share-visual">
         <div className="share-brand"><button className="text-button" onClick={onClose}>← {copy.back}</button><span className="brand-mark">BAARS-IV</span></div>

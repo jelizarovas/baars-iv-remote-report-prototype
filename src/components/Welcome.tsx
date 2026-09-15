@@ -1,5 +1,5 @@
 import { useLanguage } from '../i18n/LanguageContext';
-import { IsometricIllustration, NeuralBackground } from './IsometricIllustration';
+import { IsometricIllustration } from './IsometricIllustration';
 
 export function Welcome({ onStart, onInvite }: { onStart: () => void; onInvite: () => void }) {
   const { language } = useLanguage();
@@ -12,7 +12,7 @@ export function Welcome({ onStart, onInvite }: { onStart: () => void; onInvite: 
     privacy: 'Duomenys lieka jūsų naršyklėje.', privacyBody: 'Paskyra nekuriama, o duomenys nesiunčiami į serverį. Nebaigtus atsakymus naršyklė išsaugo šiame įrenginyje.',
     fill: 'Atsakyti apie kitą žmogų', fillHint: 'Pradėti klausimyną dabar', invite: 'Paprašyti atsakyti apie mane', inviteHint: 'Sukurti jam nuorodą',
   };
-  return <main className="welcome-experience material-page"><NeuralBackground/><section className="welcome-panel">
+  return <main className="welcome-experience material-page"><section className="welcome-panel">
     <div className="welcome-copy"><div className="brand-mark">BAARS-IV</div><h1>{copy.title}</h1><p className="lede">{copy.lede}</p>
       <div className="welcome-note"><strong>{copy.privacy}</strong><span>{copy.privacyBody}</span></div>
       <div className="welcome-actions"><button className="primary" onClick={onStart}><span className="welcome-action-icon" aria-hidden="true">→</span><strong>{copy.fill}</strong><small>{copy.fillHint}</small></button><button onClick={onInvite}><span className="welcome-action-icon" aria-hidden="true">↗</span><strong>{copy.invite}</strong><small>{copy.inviteHint}</small></button></div>
