@@ -37,6 +37,5 @@ export function NeuralBackground() {
     <g className="neuron-field">{neurons.map((neuron,index)=><use key={`${neuron.x}-${neuron.y}`} className={`neuron-cell neuron-cell-${index+1}`} href="#neuron-cell" transform={`translate(${neuron.x} ${neuron.y}) rotate(${neuron.r}) scale(${neuron.s})`}/>)}</g>
     <g className="neuron-pulses">{neurons.map((neuron,index)=><circle key={`${neuron.x}-${neuron.y}`} className={`neuron-pulse neuron-pulse-${index+1}`} cx={neuron.x} cy={neuron.y} r={30*neuron.s}/>)}</g>
     <g className="signal-lines" fill="none">{signalPaths.map((path,index)=><use key={path} href={`#signal-path-${index}`} className={`signal-line signal-line-${index+1}`}/>)}</g>
-    <g className="traveling-signals">{signalPaths.map((_,index)=><circle key={index} className={`traveling-signal traveling-signal-${index+1}`} r="5"><animateMotion dur={`${4.4+index*.65}s`} begin={`${index*-1.13}s`} repeatCount="indefinite"><mpath href={`#signal-path-${index}`}/></animateMotion></circle>)}</g>
   </svg>;
 }

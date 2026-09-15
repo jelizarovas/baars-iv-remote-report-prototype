@@ -23,7 +23,7 @@ export default function App(){
  const invitation=useMemo(()=>invitationFromHash(),[]);
  const initialView=invitation?'setup':location.hash==='#share'?'share':location.hash==='#start'?'setup':'welcome';
  const [session,setSession]=useState<Session|null>(null);const [view,setView]=useState<View>(initialView);const [drawer,setDrawer]=useState(false);const [invalid,setInvalid]=useState(false);const [message,setMessage]=useState('');const [saveState,setSaveState]=useState<'saved'|'saving'>('saved');const saveTimer=useRef<number|undefined>(undefined);
- const runTransition=(update:()=>void)=>{const start=(document as Document&{startViewTransition?:(callback:()=>void)=>void}).startViewTransition;if(start&&!matchMedia('(prefers-reduced-motion: reduce)').matches)start.call(document,update);else update()};
+ const runTransition=(update:()=>void)=>update();
  const navigate=(next:View,url?:string)=>runTransition(()=>{if(url!==undefined)history.replaceState(null,'',url);setView(next)});
  useEffect(()=>{setSession(current=>current&&current.respondent.language!==language?{...current,respondent:{...current.respondent,language}}:current)},[language]);
  useEffect(()=>{if(!session)return;setSaveState('saving');window.clearTimeout(saveTimer.current);saveTimer.current=window.setTimeout(()=>{saveSession({...session,lastUpdated:new Date().toISOString()});setSaveState('saved')},180);return()=>window.clearTimeout(saveTimer.current)},[session]);

@@ -28,10 +28,7 @@ export function AccessGate({
   const [allowed, setAllowed] = useState(() => development && !configuredHash || sessionStorage.getItem(storageKey) === configuredHash);
   const [value, setValue] = useState('');
   const [message, setMessage] = useState('');
-  const changeAccess = (update: () => void) => {
-    const start = (document as Document & { startViewTransition?: (callback: () => void) => void }).startViewTransition;
-    if (start && !matchMedia('(prefers-reduced-motion: reduce)').matches) start.call(document, update); else update();
-  };
+  const changeAccess = (update: () => void) => update();
 
   if (allowed) return <><button className="review-lock" type="button" onClick={()=>changeAccess(()=>{sessionStorage.removeItem(storageKey);setAllowed(false);setValue('')})} aria-label={language==='en'?'Lock review and return to password':'Užrakinti peržiūrą ir grįžti prie slaptažodžio'}><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>{language==='en'?'Lock review':'Užrakinti'}</span></button><div className="page-stage">{children}</div></>;
 
